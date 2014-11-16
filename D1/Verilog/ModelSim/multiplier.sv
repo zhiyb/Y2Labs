@@ -6,16 +6,16 @@
 */
 
 module multiplier #(parameter n = 8)
-				  (input logic start, input logic [1:0] func,
-				   input logic oe, output logic ready, inout [n - 1:0] data);
+		   (input logic start, input logic [1:0] func,
+		    input logic oe, output logic ready, inout [n - 1:0] data);
 
 //// Clock
 	logic clock;
-  initial
-  begin
-    clock = 1'b0;
-    forever #5ns clock = ~clock;
-  end
+	initial
+	begin
+		clock = 1'b0;
+		forever #5ns clock = ~clock;
+	end
 
 //// Blocks
 	logic C, reset, shift, add_shift;
