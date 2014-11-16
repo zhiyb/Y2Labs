@@ -1,0 +1,550 @@
+<html>
+<head>
+<title>D2 Specification 2014/2015</title>
+</head>
+<body>
+
+<h1>D2 Specification 2014/2015</h1>
+
+<hr>
+
+<ul>
+<li><h2>Circuit 1: Inverter</h2>
+
+
+<P>
+This is a single inverter from the D2 library.
+It is included in the design to aid automated checking and feedback.
+
+
+<ul><li><h3>Ports</h3>
+<ul><table>
+<tr><th align='center'>Port</th><td><th align='center'>D2_DESIGN_IO connection	</th>
+<tr><th align='center'>A	</td><td>input	</td><td align='center'>A0
+<tr><th align='center'>Q	</td><td>output	</td><td align='center'>Q0
+</table></ul>
+
+</ul>
+
+</ul>
+<hr>
+<ul>
+
+<P><li><h2>Circuit 2: Ring Oscillator</h2>
+
+<P>
+Each team should design a ring ocsillator circuit with a custom output frequency.
+
+<ul>
+<li> Design Frequency = Base Frequency + Offset Frequency 
+<li> Base Frequency = 5 MHz
+<li> Offset Frequency = <b>TeamID</b> &times; 300kHz
+<li> For Team A: <b>TeamID</b> = 0, Team B: <b>TeamID</b> = 1, etc.
+</ul>
+
+<P>
+For example, for Team D, <b>TeamID</b> = 3, therefore the design frequency will be 5MHz + 3 &times; 300kHz = 5.9MHz 
+
+<ul><li><h3>Ports</h3>
+
+<P>
+<ul>
+<table cellpadding='5'>
+<tr><th align='center'>Port</th><td><th align='center'>D2_DESIGN_IO connection	</th>
+<tr><th align='center'>nReset	</td><td>input	</td><td align='center'>A1
+<tr><th align='center'>Enable	</td><td>input	</td><td align='center'>A2
+<tr><th align='center'>OscOut	</td><td>output	</td><td align='center'>Q1
+</table>
+</ul>
+
+<P>
+The ring oscillator should operate only when the <b>Enable</b> signal is <b>1</b>.
+
+<P>
+<b>nReset</b> is an active low asynchronous reset common to all D-Types flip-flops used in this circuit
+(should you find that you need any)
+
+</ul>
+
+</ul>
+<hr>
+<ul>
+
+<P><li><h2>Circuit 3: 4-bit Adder (Hierarchical Circuit)</h2>
+
+
+<P>
+The adder will have 2 4-bit inputs (X and Y) and will produce a 4-bit output (XY).
+The adder will also support carry in and carry out.
+
+<P>
+The adder should be built as a hierarchical circuit to reduce design and layout time and in order to reduce the
+likelihood of errors.
+
+<ul><li><h3>Ports</h3>
+<ul>
+<table cellpadding='5'>
+<tr><th align='center'>Port</th><td><td><th align='center'>D2_DESIGN_IO connection	</th>
+
+<tr><th align='center'>CarryIn	</td><td>		</td><td>input	</td><td align='center'>A3
+
+<tr><th align='center'>X0	</td><td>	(LSB)	</td><td>input	</td><td align='center'>A4
+<tr><th align='center'>X1	</td><td>		</td><td>input	</td><td align='center'>A5
+<tr><th align='center'>X2	</td><td>		</td><td>input	</td><td align='center'>A6
+<tr><th align='center'>X3	</td><td>		</td><td>input	</td><td align='center'>A7
+
+<tr><th align='center'>Y0	</td><td>	(LSB)	</td><td>input	</td><td align='center'>A8
+<tr><th align='center'>Y1	</td><td>		</td><td>input	</td><td align='center'>A9
+<tr><th align='center'>Y2	</td><td>		</td><td>input	</td><td align='center'>A10
+<tr><th align='center'>Y3	</td><td>		</td><td>input	</td><td align='center'>A11
+
+<tr><th align='center'>XY0	</td><td>	(LSB)	</td><td>output	</td><td align='center'>Q3
+<tr><th align='center'>XY1	</td><td>		</td><td>output	</td><td align='center'>Q4
+<tr><th align='center'>XY2	</td><td>		</td><td>output	</td><td align='center'>Q5
+<tr><th align='center'>XY3	</td><td>		</td><td>output	</td><td align='center'>Q6
+<tr><th align='center'>CarryOut	</td><td>		</td><td>output	</td><td align='center'>Q7
+</table>
+</ul>
+
+</ul>
+
+</ul>
+<hr>
+<ul>
+
+<P><li><h2>Circuit 4: 8-bit Sequence Recognition</h2>
+
+
+<P>
+The recogniser will be fed a stream of bits amongst which it will search for a predefined sequence
+(this is a common feature of wireless communication systems which must recognise a synchronisation
+sequence in a stream of incoming data).
+
+<P>
+Each team will have a unique sequence to detect.
+<P>
+<ul><li><h3>Sequence to detect</h3>
+
+<table border = '1' cellspacing='0'>
+<tr valign='top'><td><b>Team</b>
+<td align='center'><b>Sequence</b><br><i>(leftmost bit in the sequence arrives first)</i>
+<tr><td align='center'>A
+<td align='center'><tt>11000001</tt>
+<tr><td align='center'>B
+<td align='center'><tt>11000101</tt>
+<tr><td align='center'>C
+<td align='center'><tt>11001001</tt>
+<tr><td align='center'>D
+<td align='center'><tt>11001101</tt>
+<tr><td align='center'>E
+<td align='center'><tt>11010001</tt>
+<tr><td align='center'>F
+<td align='center'><tt>11010101</tt>
+<tr><td align='center'>G
+<td align='center'><tt>11011001</tt>
+<tr><td align='center'>H
+<td align='center'><tt>11011101</tt>
+<tr><td align='center'>I
+<td align='center'><tt>11100001</tt>
+<tr><td align='center'>J
+<td align='center'><tt>11100101</tt>
+<tr><td align='center'>K
+<td align='center'><tt>11101001</tt>
+<tr><td align='center'>L
+<td align='center'><tt>11101101</tt>
+<tr><td align='center'>M
+<td align='center'><tt>11110001</tt>
+<tr><td align='center'>N
+<td align='center'><tt>11110101</tt>
+<tr><td align='center'>O
+<td align='center'><tt>11111001</tt>
+<tr><td align='center'>P
+<td align='center'><tt>11111101</tt>
+</table>
+
+<li><h3>Ports</h3>
+
+<P>
+<ul>
+<table cellpadding='5'>
+<tr><th align='center'>Port</th><td><th align='center'>D2_DESIGN_IO connection	</th>
+
+<tr><th align='center'>Clock	</td><td>input	</td><td align='center'>A12
+<tr><th align='center'>nReset	</td><td>input	</td><td align='center'>A13
+<tr><th align='center'>DataIn	</td><td>input	</td><td align='center'>A14
+
+<tr><th align='center'>MatchAll	</td><td>output	</td><td align='center'>Q12
+
+</table>
+</ul>
+
+<P>
+<b>Clock</b> is common to all D-Types flip-flops used in this circuit
+
+<P>
+<b>nReset</b> is an active low asynchronous reset common to all D-Types flip-flops used in this circuit
+
+<li><h3>Detailed Specification</h3>
+
+<P>
+When all bits are matched, MatchAll is set to high. MatchAll should change on the rising edge of the 
+clock. MatchAll should only be high for one cycle. All occurrences of the sequence should be 
+recognised even if one sequence overlaps another. Thus if team H's recogniser receives an input of 
+110111011101, MatchAll will go high twice to indicate that the sequence 11011101 has been 
+detected twice.
+<P>
+Maximum Number of D type flip flops (either from library or constructed) = 4
+</ul>
+
+<hr>
+
+<ul>
+</ul>
+<li><h2>Circuit 5: Hamming Encoder/Decoder</h2>
+
+
+<P>
+The final problem is to design an encoder <B>or</B> a decoder for an (8,4)
+Hamming error correcting code.
+<P>
+<H3> (8,4) Hamming Error Correcting Code</H3>
+<P>
+Simple parity checks can be used to detect errors in a communications link. When an
+error is discovered the data is discarded and must be re-transmitted.
+<P>
+In certain systems it is desired not only to detect the error but also to correct it without
+re-transmission. There are a number of different error correcting codes which could be used,
+but we shall only consider a simple (8,4) block code.
+<P>
+The code has four data bits and four parity bits and is capable of correcting a single error,
+and detecting certain combinations of multiple errors.
+<P>
+<H3> Coding the data</H3>
+<P>
+Before transmission, the four bit data word is converted to an eight bit code word by
+interleaving it with four parity bits.
+<P>
+The four original data bits are <I>b<SUB>7</SUB>(=d<SUB>3</SUB>), b<SUB>5</SUB>(=d<SUB>2</SUB>), b<SUB>3</SUB></I>(=d<SUB>1</SUB>) and <I>b<SUB>1</SUB></I>(=d<SUB>0</SUB>).
+<P>
+The four parity bits are <I>b<SUB>6</SUB>, b<SUB>4</SUB>, b<SUB>2</SUB></I>
+and <I>b<SUB>0</SUB></I>.
+<P>
+<ul>
+<table border='1' cellspacing='0'>
+<tr><th>Data Word</th><th colspan='8'>Code Word</th></tr>
+<tr><td align='center'><i>d<SUB>3</SUB>..d<SUB>0</SUB></i></td>
+<td align='center'><i>b<SUB>0</SUB></i></td>
+<td align='center'><i>b<SUB>1</SUB></i></td>
+<td align='center'><i>b<SUB>2</SUB></i></td>
+<td align='center'><i>b<SUB>3</SUB></i></td>
+<td align='center'><i>b<SUB>4</SUB></i></td>
+<td align='center'><i>b<SUB>5</SUB></i></td>
+<td align='center'><i>b<SUB>6</SUB></i></td>
+<td align='center'><i>b<SUB>7</SUB></i></td>
+</tr>
+<tr><td align='center'><tt>0000</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td></tr>
+<tr><td align='center'><tt>0001</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td></tr>
+<tr><td align='center'><tt>0010</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td></tr>
+<tr><td align='center'><tt>0011</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td></tr>
+<tr><td align='center'><tt>0100</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td></tr>
+<tr><td align='center'><tt>0101</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td></tr>
+<tr><td align='center'><tt>0110</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td></tr>
+<tr><td align='center'><tt>0111</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td></tr>
+<tr><td align='center'><tt>1000</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td></tr>
+<tr><td align='center'><tt>1001</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td></tr>
+<tr><td align='center'><tt>1010</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td></tr>
+<tr><td align='center'><tt>1011</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td></tr>
+<tr><td align='center'><tt>1100</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td></tr>
+<tr><td align='center'><tt>1101</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td></tr>
+<tr><td align='center'><tt>1110</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td></tr>
+<tr><td align='center'><tt>1111</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>0</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td><td align='center'><tt>1</tt></td></tr>
+</table>
+</ul>
+<P>
+The code word is then transmitted bit serially starting with bit
+<I>b<SUB>0</SUB></I>.<br>
+<i> note that the codeword in the above table has been arranged so that the first bit in the transmitted sequence is on the left </i>
+
+<P>
+
+<H3> Decoding the data</H3>
+<P>
+Detection and correction of errors
+<P>
+When the potentially corrupted data is received, the Syndrome {A,B,C,D} is calculated using
+the following rules: (n.b. '+' here is modulo 2 addition   i.e. exclusive-or)
+<P>
+<UL>
+<I>A = b<SUB>7</SUB> + b<SUB>5</SUB> + b<SUB>1</SUB> + b<SUB>0</SUB></I>
+<P>
+<I>B = b<SUB>7</SUB> + b<SUB>3</SUB> + b<SUB>2</SUB> + b<SUB>1</SUB></I>
+<P>
+<I>C = b<SUB>5</SUB> + b<SUB>4</SUB> + b<SUB>3</SUB> + b<SUB>1</SUB></I>
+<P>
+<I>D = b<SUB>7</SUB> + b<SUB>6</SUB> + b<SUB>5</SUB> + b<SUB>4</SUB> + b<SUB>3</SUB> + b<SUB>2</SUB> + b<SUB>1</SUB> + b<SUB>0</SUB></I>
+<P>
+<LI>  If there are no errors then all the Syndrome bits will be '1'
+<P>
+<LI>  If there is only one error then D will be '0' and it is possible to determine which bit is
+in error by examining the other syndrome bits. If a data bit is in error it can be corrected.
+<P>
+<LI>  If there are two errors then D will be '1' while one or more of the other
+syndrome bits are '0' indicating multiple errors - no correction is possible.
+<P>
+<LI>  If there are three or more errors then the code will fail and an incorrect
+data word may be decoded without the flagging of an error.
+</UL>
+<P>
+The table below shows how the syndrome can be interpreted.
+<P>
+<UL>
+<TABLE border='1' cellspacing='0'>
+<TR valign='top'>
+<td align='center'><b>Syndrome</b><br><tt>ABCD</tt></td><td align='center'><b>Inference</b></td>
+<TR>
+<td align='center'><tt>0000</tt> </TD><TD> Error in <I>b<SUB>1</SUB></I></TD>
+<TR>
+<td align='center'><tt>1000</tt> </TD><TD> Error in <I>b<SUB>3</SUB></I></TD>
+<TR>
+<td align='center'><tt>0100</tt> </TD><TD> Error in <I>b<SUB>5</SUB></I></TD>
+<TR>
+<td align='center'><tt>1100</tt> </TD><TD> Error in <I>b<SUB>4</SUB></I></TD>
+<TR>
+<td align='center'><tt>0010</tt> </TD><TD> Error in <I>b<SUB>7</SUB></I></TD>
+<TR>
+<td align='center'><tt>1010</tt> </TD><TD> Error in <I>b<SUB>2</SUB></I></TD>
+<TR>
+<td align='center'><tt>0110</tt> </TD><TD> Error in <I>b<SUB>0</SUB></I></TD>
+<TR>
+<td align='center'><tt>1110</tt> </TD><TD> Error in <I>b<SUB>6</SUB></I></TD>
+<TR>
+<td align='center'><tt>0001</tt> </TD><TD> Multiple errors: cannot correct.</TD>
+<TR>
+<td align='center'><tt>1001</tt> </TD><TD> Multiple errors: cannot correct.</TD>
+<TR>
+<td align='center'><tt>0101</tt> </TD><TD> Multiple errors: cannot correct.</TD>
+<TR>
+<td align='center'><tt>1101</tt> </TD><TD> Multiple errors: cannot correct.</TD>
+<TR>
+<td align='center'><tt>0011</tt> </TD><TD> Multiple errors: cannot correct.</TD>
+<TR>
+<td align='center'><tt>1011</tt> </TD><TD> Multiple errors: cannot correct.</TD>
+<TR>
+<td align='center'><tt>0111</tt> </TD><TD> Multiple errors: cannot correct.</TD>
+<TR>
+<td align='center'><tt>1111</tt> </TD><TD> No Error</TH>
+</TABLE>
+</UL>
+
+<P>
+The system when fully completed will be connected as shown:
+
+<P>
+<CENTER><IMG SRC="../gif/codec.png"></CENTER>
+<P>
+
+</ul>
+<ul><li><h3>Ports</h3>
+<ul>
+<table cellpadding='5'>
+<tr><th align='center'>Port</th><td><td><th align='center'>D2_DESIGN_IO connection	</th>
+
+<tr><th align='center'>Clock	</td><td>		</td><td>input	</td><td align='center'>A15
+<tr><th align='center'>nReset	</td><td>		</td><td>input	</td><td align='center'>A16
+<tr>
+
+<tr><th align='center'>eStart	</td><td>		</td><td>input	</td><td align='center'>A17
+
+<tr><th align='center'>eD0	</td><td>	(LSB)	</td><td>input	</td><td align='center'>A18
+<tr><th align='center'>eD1	</td><td>		</td><td>input	</td><td align='center'>A19
+<tr><th align='center'>eD2	</td><td>		</td><td>input	</td><td align='center'>A20
+<tr><th align='center'>eD3	</td><td>		</td><td>input	</td><td align='center'>A21
+
+<tr><th align='center'>eStrobe	</td><td>		</td><td>output	</td><td align='center'>Q15
+<tr><th align='center'>eData	</td><td>		</td><td>output	</td><td align='center'>Q16
+
+<tr>
+
+<tr><th align='center'>dStrobe	</td><td>		</td><td>input	</td><td align='center'>A22
+<tr><th align='center'>dData	</td><td>		</td><td>input	</td><td align='center'>A23
+
+<tr><th align='center'>dReady	</td><td>		</td><td>output	</td><td align='center'>Q17
+
+<tr><th align='center'>dD0	</td><td>	(LSB)	</td><td>output	</td><td align='center'>Q18
+<tr><th align='center'>dD1	</td><td>		</td><td>output	</td><td align='center'>Q19
+<tr><th align='center'>dD2	</td><td>		</td><td>output	</td><td align='center'>Q20
+<tr><th align='center'>dD3	</td><td>		</td><td>output	</td><td align='center'>Q21
+
+<tr><th align='center'>dValid	</td><td>		</td><td>output	</td><td align='center'>Q22
+<tr><th align='center'>dError	</td><td>		</td><td>output	</td><td align='center'>Q23
+
+</table>
+</ul>
+
+<li><h3>Detailed Specification</h3>
+<P>
+As mentioned above, you must implement <B>either</B> a Hamming encoder
+<B>or</B> a Hamming decoder. Once the designs have been
+fabricated, it should be possible to build a full system
+using an encoder from one team
+and a decoder from another team.
+<P>
+<B> General Information</B>
+
+<UL>
+<LI> Synchronous Design:
+
+<P>
+<I>
+All designs must be fully synchronous. Major penalties will be incurred by
+teams who adopt asynchronous or quasi-synchronous design styles; as well as
+losing marks you will probably find that your design doesn't work.
+
+<P>
+A fully synchronous design contains no spurious state elements; no RS
+flip-flops, no transparent latches and no feedback paths within combinational
+logic blocks. The only state elements will be the the edge triggered D-types
+as supplied in the D2 library.
+</I>
+
+<P>
+<LI> Common Inputs
+<UL>
+<P>
+<LI> <b>Clock</b>
+<P>
+<I> A single clock signal with an active rising edge is common to all D-types. 
+You should not attempt to connect this signal to any gate input or output which 
+is not the clock input of a D-type.</I>
+<P>
+<LI> <b>nReset</b>
+<P>
+<I> A single active-low asynchronous reset signal is common to all D-types,
+this input is used for initialization only. You should not attempt to connect
+this signal to any gate input or output which is not the reset input of a D-type.</I>
+</UL>
+</UL>
+
+<P>
+<B> Encoder Specification</B>
+<P>
+<UL>
+<LI> Inputs
+<P>
+<UL>
+<LI><b>eStart</b>
+<P>
+The <b>eStart</b> input will go high for one cycle when the data is available on the
+data inputs.
+<P>
+<I>The encoder should not accept two <b>eStart</b> pulses within any eight cycles
+as this will corrupt the output stream.</I>
+<P>
+<LI><b>eD3</b> <b>eD2</b> <b>eD1</b> <b>eD0</b>
+<P>
+Parallel data inputs. You may assume that these will remain stable for eight
+clock cycles after the start signal goes high.
+</UL>
+<P>
+<LI> Outputs
+<P>
+<UL>
+<LI><b>eData</b>
+<P>
+Serial data output.
+8-bit code words are transmitted bit serially starting with bit
+<I>b<SUB>0</SUB></I>.
+When no code word is being transmitted, this output should return to zero.
+<P>
+<LI><b>eStrobe</b>
+<P>
+The <b>eStrobe</b> output must go high when bit <I>b<SUB>0</SUB></I> is output.
+It is low at all other times.
+</UL>
+</UL>
+<P>
+<B> Decoder Specification</B>
+<P>
+<UL>
+<LI> Inputs
+<P>
+<UL>
+<LI><b>dData</b>
+<P>
+Serial data input.
+<P>
+<LI><b>dStrobe</b>
+<P>
+The <b>dStrobe</b> input will go high for one cycle when <I>b<SUB>0</SUB></I> is available on the serial input.
+</UL>
+<P>
+<LI> Outputs
+<P>
+<UL>
+<LI><b>dReady</b>
+<P>
+The <b>dReady</b> output must go high for one cycle when the data becomes ready.
+<P>
+<LI><b>dD3</b> <b>dD2</b> <b>dD1</b> <b>dD0</b>
+<P>
+Parallel data output.
+The data should remain stable and valid between <b>dReady</b> cycles.
+<P>
+<LI><b>dValid</b>
+<P>
+This signal flags that valid data is available on the parallel data output.
+The <b>dValid</b> signal will be '0' in the event of an uncorrectable error.
+The <b>dValid</b> signal should remain stable between <b>dReady</b> cycles.
+<LI><b>dError</b>
+<P>
+Each design should also have a <b>dError</b> output which indicates whether an
+error has been detected during the receipt of data.
+Such an error is signalled while <b>dReady</b> is high and will remain at zero at
+all other times.
+</UL>
+</UL>
+
+<P>
+<H3> Encoder or Decoder?</H3>
+
+<P>
+The choice of a circuit for implementation will be an important
+design decision for this exercise.
+In the initial stages you may like to produce outline designs for both an
+encoder and a decoder.
+It is certainly possible that one or more of your initial designs will not
+fit in the space available.
+
+<P>
+In choosing between designs, you should remember that
+you will get more marks for a simple functional design than for an
+ambitious design that doesn't quite work.
+
+A good decoder design is likely to be larger than a good encoder design.
+
+<P>
+<B>A hint for teams who are struggling:</B> A simple implementation of the
+encoder circuit which doesn't meet the specification for rejecting multiple
+<b>eStart</b> signals within eight clock cycles will occupy less space
+and will receive a reasonable mark (if designed and implemented well).
+
+<P>
+Note that if you chose to relax the specification such as described above you
+must document this in your assignment submission comments and in your final report.
+
+<P>
+<H3> Too Easy?</H3>
+
+If I've made this too easy for you, you can always try and fit both a decoder
+and an encoder on your design.
+
+</ul>
+
+
+<HR>
+<DIV ALIGN=right>
+<P>	Iain McNally<BR>
+	5-10-2014
+</DIV>
+</BODY>
+</HTML>

@@ -1,0 +1,10 @@
+(V(dD0)+2*V(dD1)+4*V(dD2)+8*V(dD3))/3.3 V(dError) V(dReady) V(dValid)
+
+V(CODEC_Clock)/3+0.5 (V(DEC_dD0)+2*V(DEC_dD1)+4*V(DEC_dD2)+8*V(DEC_dD3))/3.3 V(DEC_dError) V(DEC_dReady) V(DEC_dValid)
+V(CODEC_Clock)/3+0.5 (V(ENC_eD0)+2*V(ENC_eD1)+4*V(ENC_eD2)+8*V(ENC_eD3))/5 V(ENC_eData) V(ENC_eStart) V(ENC_eStrobe)
+
+V(L0_Clock)/3+0.5 (V(L0_eD0)+2*V(L0_eD1)+4*V(L0_eD2)+8*V(L0_eD3))/5 V(L0_eStart) V(L0_nReset)
+V(L0_Clock)/3+0.5 V(L1_eData) V(L1_eStrobe)
+V(L0_Clock)/3+0.5 (V(L2_dD0)+2*V(L2_dD1)+4*V(L2_dD2)+8*V(L2_dD3))/3.3 V(L2_dError) V(L2_dReady) V(L2_dValid)
+V(L0_Clock)/3+0.5 V(L3_eData) V(L3_eStrobe)
+V(L0_Clock)/3+0.5 (V(L4_dD0)+2*V(L4_dD1)+4*V(L4_dD2)+8*V(L4_dD3))/3.3 V(L4_dError) V(L4_dReady) V(L4_dValid)
