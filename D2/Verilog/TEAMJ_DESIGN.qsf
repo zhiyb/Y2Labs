@@ -1,0 +1,83 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 1991-2013 Altera Corporation
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, Altera MegaCore Function License 
+# Agreement, or other applicable license agreement, including, 
+# without limitation, that your use is for the sole purpose of 
+# programming logic devices manufactured by Altera and sold by 
+# Altera or its authorized distributors.  Please refer to the 
+# applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus II 64-Bit
+# Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
+# Date created = 13:45:47  October 18, 2014
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		TEAMJ_DESIGN_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus II software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY MAX3000A
+set_global_assignment -name DEVICE "EPM3064ALC44-10"
+set_global_assignment -name TOP_LEVEL_ENTITY TEAMJ_DESIGN
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION "13.0 SP1"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "13:45:47  OCTOBER 18, 2014"
+set_global_assignment -name LAST_QUARTUS_VERSION "13.0 SP1"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR "-1"
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name MAX7000_DEVICE_IO_STANDARD "3.3-V LVTTL"
+set_location_assignment PIN_4 -to A4
+set_location_assignment PIN_5 -to A5
+set_location_assignment PIN_6 -to A6
+set_location_assignment PIN_8 -to A7
+set_location_assignment PIN_1 -to A1
+set_location_assignment PIN_44 -to A2
+set_location_assignment PIN_9 -to A3
+set_location_assignment PIN_37 -to A8
+set_location_assignment PIN_39 -to A9
+set_location_assignment PIN_40 -to A10
+set_location_assignment PIN_41 -to A11
+set_location_assignment PIN_43 -to A12
+set_location_assignment PIN_14 -to Q0
+set_location_assignment PIN_16 -to Q1
+set_location_assignment PIN_18 -to Q3
+set_location_assignment PIN_19 -to Q4
+set_location_assignment PIN_20 -to Q5
+set_location_assignment PIN_21 -to Q6
+set_location_assignment PIN_33 -to Q7
+set_location_assignment PIN_34 -to Q12
+set_location_assignment PIN_11 -to Q15
+set_location_assignment PIN_12 -to Q16
+set_location_assignment PIN_28 -to Q17
+set_location_assignment PIN_24 -to Q18
+set_location_assignment PIN_25 -to Q19
+set_location_assignment PIN_26 -to Q20
+set_location_assignment PIN_27 -to Q21
+set_location_assignment PIN_31 -to Q22
+set_location_assignment PIN_29 -to Q23
+set_location_assignment PIN_2 -to A0
+set_global_assignment -name MAX7000_OPTIMIZATION_TECHNIQUE AREA
+set_global_assignment -name SYNTH_TIMING_DRIVEN_SYNTHESIS OFF
+set_global_assignment -name VERILOG_FILE TEAMJ_ORCAD_LAYOUT_S.V
+set_global_assignment -name VERILOG_FILE d2lib.v
