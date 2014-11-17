@@ -17,7 +17,7 @@ module multiplier #(parameter n = 8)
 
 //// Debounce
 	logic start;
-	debounce #(.n(10000000)) d0(.clk(osc_clk), .in(startPB), .out(start));
+	debounce #(.n(1000000)) d0(.clk(osc_clk), .in(startPB), .out(start));
 
 //// Blocks
 	logic C, reset, shift, add_shift;
