@@ -7,7 +7,7 @@
 
 module multiplier(input logic start, output logic[7:0] AQ);
 
-logic osc_clk, clock, C, ready, reset, shift, add_shift;
+logic osc_clk, clock, C, ready, reset, shift, add;
 logic [3:0] M,Qin, Sum;
 
 //// Internal Oscillator 3.33MHz
@@ -26,6 +26,6 @@ counter c(.*); // produces slow clock
 adder A(.A(AQ[7:4]), .M(M), .C(C), .Sum(Sum));
 register R(.*);
 sequencer S(.start(start), .clock(clock), .reset(reset), .Q0(AQ[0]),
- .add_shift(add_shift), .shift(shift), .ready(ready));
+ .add(add), .shift(shift), .ready(ready));
   
 endmodule

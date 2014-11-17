@@ -1,9 +1,9 @@
-module sequencer #(parameter n = 4)
+module sequencer #(parameter n=4, logn=2)
 	(input logic start, clock, Q0,
-	 output logic add_shift, shift, ready, reset);
+	 output logic add, shift, ready, reset);
 
-enum {idle, shifting, stopped} present, next;
-logic [$clog2(n) - 1:0] count, next_count;
+enum {idle, adding, shifting, stopped} present, next;
+logic [logn - 1:0] count, next_count;
 
 always_ff @(posedge clock)
 	/*if (reset)
@@ -19,7 +19,7 @@ always_ff @(posedge clock)
 
 always_comb
 begin
-	add_shift = 1'b0;
+	add = 1'b0;
 	shift = 1'b0;
 	ready = 1'b0;
 	reset = 1'b0;
@@ -30,17 +30,22 @@ begin
 		if (start)
 		begin
 			reset = 1'b1;
-			next_count = n - 1;
-			next = shifting;
+			next_count = n;
+			next = adding;
 		end
-	shifting:
+	adding:
 	begin
 		next_count = count - 1;
+		next = shifting;
 		if (Q0)
-			add_shift = 1'b1;
+			add = 1'b1;
+	end
+	shifting:
+	begin
+		shift = 1'b1;
+		if (count != 0)
+			next = adding;
 		else
-			shift = 1'b1;
-		if (count == 0)
 			next = stopped;
 	end
 	stopped:
@@ -48,8 +53,8 @@ begin
 		ready = 1'b1;
 		if (start)
 		begin
-			next_count = n - 1;
-			next = shifting;
+			next_count = n;
+			next = adding;
 			reset = 1'b1;
 		end
 		else

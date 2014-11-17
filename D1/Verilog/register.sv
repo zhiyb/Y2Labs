@@ -5,18 +5,25 @@
    last revision: 17 Oct' 13
 */
 
-module register #(parameter n = 4)
-				(input logic clock, reset, add_shift, shift, C,
-				 input logic[n - 1:0] Qin, Sum, output logic[n * 2 - 1:0] AQ);
+module register (input logic clock, reset, add, shift, C,
+              input logic[3:0] Qin, Sum, output logic[7:0] AQ);
+
+logic Creg; // MSB carry bit storage
 
 always_ff @ (posedge clock)
   if (reset)  // clear C,A and load Q
   begin
-   AQ[n * 2 - 1:n] <= 0;
-   AQ[n - 1:0] <= Qin; // load multiplier into Q
+   Creg <= 0;
+   AQ[7:4] <= 0;
+   AQ[3:0] <= Qin; // load multiplier into Q
   end
-  else if (add_shift) // add, then shift
-   AQ <= {C,Sum,AQ[n - 1:1]};
+  else if (add) // store Sum in C,A
+  begin
+   Creg <= C;
+   AQ[7:4] <= Sum;
+  end
   else if (shift) // shift A, Q
-   AQ <= {1'b0,AQ[n * 2 - 1:1]};
+  begin
+   {Creg,AQ} <= {1'b0,Creg,AQ[7:1]};
+  end
 endmodule
