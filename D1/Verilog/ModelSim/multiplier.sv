@@ -22,10 +22,11 @@ module multiplier #(parameter n = 8)
 	logic [n - 1:0] Sum, M, Qin;
 	logic [n * 2 - 1:0] AQ;
 
-	adder #(.n(n)) A(.A(AQ[n * 2 - 1:n]), .M(M), .C(C), .Sum(Sum));
-	register #(.n(n)) R(.*);
-	sequencer #(.n(n)) S(.start(start), .clock(clock), .reset(reset), .Q0(AQ[0]),
-				.add_shift(add_shift), .shift(shift), .ready(ready));
+/*	adder #(.n(n)) a0 (.A(AQ[n * 2 - 1:n]), .*);
+	register #(.n(n)) r0 (.*);
+	sequencer #(.n(n)) s0 (.Q0(AQ[0]), .*);
+*/
+	combmultiplier #(.n(n)) m0 (.A(M), .B(Qin), .Q(AQ));
 
 //// Port
 	assign data = oe ? (func == 2'b10 ? AQ[n - 1:0] : (func == 2'b11 ? AQ[n * 2 - 1:n] : 'bz)) : 'bz;
