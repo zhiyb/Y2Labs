@@ -5,17 +5,19 @@
    last revision: 17 Oct' 13
 */
 
-module multiplier #(parameter n = 8)
-				  (input logic start, input logic [1:0] func,
-				   input logic oe, output logic ready, inout [n - 1:0] data,
-				   input logic xtal1, output logic xtal2);
+module multiplier #(parameter n = 8, freq = 25000000)
+				  (input logic startPB, input logic [1:0] func,
+				   input logic oe, output logic ready, inout [n - 1:0] data);
 
-//// On-board Oscillator 25MHz
+//// Internal Oscillator 18-26MHz
 	logic osc_clk, clock;
-	assign xtal2 = ~xtal1;
-	assign osc_clk = xtal1;
+	OSCC OSCC_INST (.OSC(osc_clk));
 	//counter #(.n(24)) c(.*); // produces slow clock
 	assign clock = osc_clk;
+
+//// Debounce
+	logic start;
+	debounce #(.n(freq / 100)) d0(.clk(osc_clk), .in(startPB), .out(start));
 
 //// Blocks
 	logic C, reset, shift, add_shift;
