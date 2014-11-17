@@ -6,7 +6,7 @@
 
 module multiplier2(input logic start, clock, output logic[7:0] AQ);
 
-logic osc_clk, C, ready, shift, add;
+logic osc_clk, C, ready, shift, add_shift;
 logic [3:0] M,Qin, Sum;
 
 //////  internal osc commented out for simulation, 
@@ -34,6 +34,6 @@ assign Qin = 4'b0111; // multiplier - hardwired
 adder A(.A(AQ[7:4]), .M(M), .C(C), .Sum(Sum));
 register R(.*);
 sequencer S(.start(start), .clock(clock), .reset(reset), .Q0(AQ[0]),
- .add(add), .shift(shift), .ready(ready));
+ .add_shift(add_shift), .shift(shift), .ready(ready));
   
 endmodule

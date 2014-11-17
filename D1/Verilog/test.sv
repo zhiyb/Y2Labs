@@ -17,7 +17,7 @@ initial
 begin
 	start = 1'b0;
 	#2s start = 1'b1;
-	#20s start = 1'b0;
+	#24s start = 1'b0;
 end
 
 endmodule
