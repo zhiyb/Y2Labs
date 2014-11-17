@@ -57,6 +57,7 @@ void test(uint8_t a, uint8_t b)
 
 	// Start
 	PORTB |= START;
+	while (!(PINB & READY));
 	while (PINB & READY);
 	PORTB &= ~START;
 	while (!(PINB & READY));
@@ -80,7 +81,12 @@ void test(uint8_t a, uint8_t b)
 		tft.setForeground(c32to16(0x00FF00));
 	} else if (b == 0 /*&& (a % 1 == 0)*/)
 			printf("%02X%02X ", (uint16_t)a, (uint16_t)b);
-			//printf("%02X%02X/%04X ", (uint16_t)a, (uint16_t)b, res);
+#if 0
+	else {
+			printf("%02X%02X/%04X", (uint16_t)a, (uint16_t)b, res);
+			tft.setX(tft.getX() - 9 * FONT_WIDTH);
+	}
+#endif
 }
 
 int main(void)
