@@ -7,13 +7,11 @@
 
 module multiplier #(parameter n = 8)
 				  (input logic start, input logic [1:0] func,
-				   input logic oe, output logic ready, inout [n - 1:0] data,
-				   input logic xtal1, output logic xtal2);
+				   input logic oe, output logic ready, inout [n - 1:0] data);
 
-//// On-board Oscillator 25MHz
+//// Internal Oscillator 18-26MHz
 	logic osc_clk, clock;
-	assign xtal2 = ~xtal1;
-	assign osc_clk = xtal1;
+	OSCC OSCC_INST (.OSC(osc_clk));
 	//counter #(.n(24)) c(.*); // produces slow clock
 	assign clock = osc_clk;
 
