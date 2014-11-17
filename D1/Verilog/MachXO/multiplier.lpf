@@ -10,6 +10,6 @@ LOCATE COMP "data[5]" SITE "79" ;
 LOCATE COMP "data[7]" SITE "76" ;
 LOCATE COMP "func[1]" SITE "77" ;
 LOCATE COMP "func[0]" SITE "112" ;
-LOCATE COMP "start" SITE "74" ;
 LOCATE COMP "ready" SITE "111" ;
 LOCATE COMP "oe" SITE "75" ;
+LOCATE COMP "startPB" SITE "74" ;
