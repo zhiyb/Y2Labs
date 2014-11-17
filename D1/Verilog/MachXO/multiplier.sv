@@ -5,7 +5,7 @@
    last revision: 17 Oct' 13
 */
 
-module multiplier #(parameter n = 8)
+module multiplier #(parameter n = 8, freq = 25000000)
 				  (input logic startPB, input logic [1:0] func,
 				   input logic oe, output logic ready, inout [n - 1:0] data);
 
@@ -17,7 +17,7 @@ module multiplier #(parameter n = 8)
 
 //// Debounce
 	logic start;
-	debounce #(.n(1000000)) d0(.clk(osc_clk), .in(startPB), .out(start));
+	debounce #(.n(freq / 100)) d0(.clk(osc_clk), .in(startPB), .out(start));
 
 //// Blocks
 	logic C, reset, shift, add_shift;
