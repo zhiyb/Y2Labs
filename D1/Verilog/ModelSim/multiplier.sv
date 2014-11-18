@@ -27,6 +27,7 @@ module multiplier #(parameter n = 8)
 	sequencer #(.n(n)) s0 (.Q0(AQ[0]), .*);
 */
 	combmultiplier #(.n(n)) m0 (.A(M), .B(Qin), .Q(AQ));
+	assign ready = 'b1;
 
 //// Port
 	assign data = oe ? (func == 2'b10 ? AQ[n - 1:0] : (func == 2'b11 ? AQ[n * 2 - 1:n] : 'bz)) : 'bz;
