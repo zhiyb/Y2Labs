@@ -13,8 +13,10 @@
 
 // PORTD as data
 
+#define COMBINATIONAL
 #define MAX	0x00
 //#define MAX	0x0F
+//#define DEBUG
 
 using namespace conv;
 
@@ -56,10 +58,14 @@ void test(uint8_t a, uint8_t b)
 	PORTD = 0xFF;
 
 	// Start
+#ifndef COMBINATIONAL
 	PORTB |= START;
 	while (!(PINB & READY));
 	while (PINB & READY);
 	PORTB &= ~START;
+#else
+	_delay_us(1);
+#endif
 	while (!(PINB & READY));
 
 	// Read L
@@ -81,7 +87,7 @@ void test(uint8_t a, uint8_t b)
 		tft.setForeground(c32to16(0x00FF00));
 	} else if (b == 0 /*&& (a % 1 == 0)*/)
 			printf("%02X%02X ", (uint16_t)a, (uint16_t)b);
-#if 0
+#ifdef DEBUG
 	else {
 			printf("%02X%02X/%04X", (uint16_t)a, (uint16_t)b, res);
 			tft.setX(tft.getX() - 9 * FONT_WIDTH);
