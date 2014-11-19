@@ -13,7 +13,6 @@ generate
 endgenerate
 
 // Connections
-genvar i, j;
 generate
 	for (x = 0; x < n; x++)
 		assign a[0][x] = 'b0;
@@ -23,10 +22,10 @@ generate
 		for (x = 0; x < n - 1; x++)
 			assign a[y][x] = s[y - 1][x + 1];
 	assign Q[n * 2 - 1] = c[n - 1][n - 1];
-	for (i = 0; i < n; i++)
-		assign Q[i] = s[i][0];
-	for (i = 0; i < n - 1; i++)
-		assign Q[n + i] = s[n - 1][i + 1];
+	for (y = 0; y < n; y++)
+		assign Q[y] = s[y][0];
+	for (x = 0; x < n - 1; x++)
+		assign Q[n + x] = s[n - 1][x + 1];
 endgenerate
 
 endmodule
