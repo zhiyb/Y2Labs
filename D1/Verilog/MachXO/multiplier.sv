@@ -1,10 +1,3 @@
-// D1 - model solution
-// encapsulating module
-/*
-   author: tjk
-   last revision: 17 Oct' 13
-*/
-
 module multiplier #(parameter n = 8, freq = 25000000)
 				  (input logic startPB, input logic [1:0] func,
 				   input logic oe, output logic ready, inout [n - 1:0] data);
