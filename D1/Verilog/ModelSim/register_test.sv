@@ -1,6 +1,6 @@
 module register_test;
 
-parameter n = 8;
+parameter n = 4;
 
 logic clock, reset, add_shift, shift, C;
 logic[n - 1:0] Qin, Sum;

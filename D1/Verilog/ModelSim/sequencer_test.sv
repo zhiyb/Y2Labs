@@ -1,6 +1,6 @@
 module sequencer_test;
 
-parameter n = 8;
+parameter n = 4;
 
 logic start, clock, Q0;
 logic add_shift, shift, ready, reset;
