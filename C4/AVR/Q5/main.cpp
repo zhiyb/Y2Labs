@@ -43,7 +43,7 @@ void init(void)
 	DDRB = 0x00;
 	PORTB = 0x00;
 	tft.init();
-	tft /= tft.Portrait;
+	tft /= tft.FlipPortrait;
 	tft.setBackground(0x0000);
 	tft.setForeground(0x667F);
 	tft.clean();
