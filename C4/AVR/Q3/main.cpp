@@ -7,7 +7,7 @@
 #define delay()	_delay_ms(1)
 
 // PORTB inputs
-char pD[8][100] = {
+char pB[8][100] = {
 	"S0000100100110",	// 7
 	"T0001101101000",	// 6
 	"",	// 5
@@ -19,7 +19,7 @@ char pD[8][100] = {
 };
 
 // PORTD outputs
-char pB[8][100] = {
+char pD[8][100] = {
 	"R10",	// 7
 	"C00///////////",	// 6
 	"A0001001011110",	// 5
@@ -53,6 +53,8 @@ void init(void)
 
 void output(void)
 {
+	if (tft.getY() + FONT_HEIGHT >= tft.height())
+		tft.setY(yTitle);
 	if (tft.getY() == yTitle) {
 		tft.setForeground(c32to16(0x0000FF));
 		for (uint8_t i = 0; i < 8; i++)
@@ -89,7 +91,7 @@ bool step(void)
 				putchar((PORTD & _BV(i)) ? '1' : '0');
 			else {
 				putchar(*pd[i]++);
-				ret = true;
+				ret = *pb[i] != '\0';
 			}
 		}
 	delay();
@@ -113,7 +115,7 @@ bool step(void)
 				putchar('X');
 			else {
 				putchar(*pb[i]++);
-				ret = true;
+				ret = *pb[i] != '\0';
 			}
 		}
 	tft.setForeground(c32to16(0xFFFFFF));
@@ -138,10 +140,12 @@ int main(void)
 		pd[i] = pD[i];
 		if (*pB[i] != '\0') {
 			eb[i] = true;
+			pb[i]++;
 			enabled++;
 		}
 		if (*pD[i] != '\0') {
 			ed[i] = true;
+			pd[i]++;
 			enabled++;
 		}
 	}
