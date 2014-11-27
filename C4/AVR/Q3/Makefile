@@ -1,7 +1,7 @@
 # http://www.nongnu.org/avr-libc/user-manual/group__demo__project.html
 # Modified by zhiyb (Yubo Zhi)
 
-PRG	= 8bit
+PRG	= Tester
 OBJ	= main.o ascii.o tft.o
 MCU_TARGET	= atmega644p
 OPTIMIZE	= -Os
