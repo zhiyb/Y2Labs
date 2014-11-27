@@ -34,6 +34,7 @@ logic CTn;
 NAND21_H U2B(.A(C), .B(T), .Q(CTn));
 logic CT;
 INV1_H U4A(.A(CTn), .Q(CT));
+logic NN;
 MUX21_H U6A(.A(N), .B(CT), .S(S), .Q(NN));
 DFC1_H U1C(.D(NN), .C(clk), .RN(n_reset), .Q(N));
 
