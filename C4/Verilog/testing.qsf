@@ -56,7 +56,10 @@ set_location_assignment PIN_20 -to T
 set_location_assignment PIN_9 -to B
 set_location_assignment PIN_19 -to K
 set_location_assignment PIN_18 -to L
-set_global_assignment -name SYSTEMVERILOG_FILE Q6.sv
-set_global_assignment -name VERILOG_FILE d2lib.v
 set_location_assignment PIN_8 -to C
 set_location_assignment PIN_16 -to N
+set_global_assignment -name SYSTEMVERILOG_FILE Q7.sv
+set_global_assignment -name VERILOG_FILE d2lib.v
+set_location_assignment PIN_6 -to M
+set_location_assignment PIN_5 -to I
+set_location_assignment PIN_14 -to O
