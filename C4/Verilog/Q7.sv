@@ -15,17 +15,17 @@ NAND31_H U3A(.A(S), .B(nT), .C(A), .Q(ASnT));
 NAND21_H U2D(.A(nST), .B(ASnT), .Q(SN));
 logic AnSnT;
 NAND31_H U3C(.A(A), .B(nT), .C(nS), .Q(AnSnT));
-logic AnST;
-NAND31_H U3B(.A(nA), .B(T), .C(nS), .Q(AnST));
-NAND21_H U2C(.A(AnSnT), .B(AnST), .Q(TN));
+logic nAnST;
+NAND31_H U3B(.A(nA), .B(T), .C(nS), .Q(nAnST));
+NAND21_H U2C(.A(AnSnT), .B(nAnST), .Q(TN));
 logic U1AI, U1AD, U1AQ;	// SN
 assign U1AI = SN;
-assign nS = U1AQ;
-DFC1_H U1A(.D(U1AD), .C(clk), .RN(n_reset), .Q(S), .QN(U1AQ));
+assign S = U1AQ;
+DFC1_H U1A(.D(U1AD), .C(clk), .RN(n_reset), .Q(U1AQ), .QN(nS));
 logic U1BI, U1BD, U1BQ;	// TN
 assign U1BI = TN;
-assign nT = U1BQ;
-DFC1_H U1B(.D(U1BD), .C(clk), .RN(n_reset), .Q(T), .QN(U1BQ));
+assign T = U1BQ;
+DFC1_H U1B(.D(U1BD), .C(clk), .RN(n_reset), .Q(U1BQ), .QN(nT));
 
 // Q5, combinational outputs (K, L)
 //logic nST;
