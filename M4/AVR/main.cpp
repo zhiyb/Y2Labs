@@ -1,8 +1,8 @@
 #include <avr/io.h>
 #include <stdio.h>
 #include <util/delay.h>
-#include "tft.h"
-#include "conv.h"
+#include <tft.h>
+#include <conv.h>
 #include "lift.h"
 
 // PORTB
