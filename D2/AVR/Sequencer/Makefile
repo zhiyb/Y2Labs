@@ -2,14 +2,16 @@
 # Modified by zhiyb (Yubo Zhi)
 
 PRG	= Sequencer
-OBJ	= main.o ascii.o tft.o
+SRC	= main.cpp
+SUBDIRS = libtft-cpp
 MCU_TARGET	= atmega644p
 OPTIMIZE	= -Os
 VERSION	= 0.0.1
-EXT = cpp
+EXT = c
 
 DEFS	= -DF_CPU=12000000
-LIBS	=
+LIBS	= -L./libtft-cpp -ltft-cpp
+INCS	= -I./libtft-cpp
 
 PRGER	= usbasp
 
@@ -24,38 +26,67 @@ ARCHIVE	= $(PRG)-$(VERSION).tar.bz2
 
 # You should not have to change anything below here.
 
+OBJ	= $(subst .c,.o,$(subst .cpp,.o,$(SRC)))
+
 CC	= avr-gcc
+CXX	= avr-g++
 
 # Override is only needed by avr-lib build system.
 
-override CFLAGS	= -g -Werror -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS)
+override CFLAGS	= -g -Werror -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS) $(INCS)
+override CXXFLAGS	= -g -Werror -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS) $(INCS)
 override LDFLAGS	= -Wl,-Map,$(PRG).map
 
 OBJCOPY	= avr-objcopy
 OBJDUMP	= avr-objdump
 SIZE	= avr-size
 
-all: $(PRG).elf lst text eeprom
+all: elf lst text eeprom
 
-$(PRG).elf: $(OBJ)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+.PHONY: elf
+elf: $(PRG).elf
+
+$(PRG).elf: subdirs $(OBJ)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJ) $(LIBS)
 	$(SIZE) $@
 
-%.o: %.$(EXT)
+%.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+# Subdirectories
+
+.PHONY: subdirs $(SUBDIRS)
+subdirs: $(SUBDIRS)
+
+$(SUBDIRS):
+	$(MAKE) -C $@
 
 # Dependency:
 
 -include $(OBJ:.o=.d)
 
-%.d: %.$(EXT)
+%.d: %.c
 	@set -e; rm -f $@; \
 	$(CC) -MM $(CFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
+%.d: %.cpp
+	@set -e; rm -f $@; \
+	$(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
+
+# Clean up
+
+.PHONY: clean
+
 clean:
-	rm -rf *.o *.d *.d.* $(PRG).elf *.eps *.png *.pdf *.bak
+	for d in $(SUBDIRS); do (cd $$d; $(MAKE) clean); done
+	rm -rf *.o *.d *.d.* $(PRG).elf *.eps *.png *.pdf
 	rm -rf *.lst *.map $(EXTRA_CLEAN_FILES)
 
 lst: $(PRG).lst
@@ -110,6 +141,8 @@ esrec: $(PRG)_eeprom.srec
 
 AVRDUDE	= avrdude
 EEPFILE := $(PRG)_eeprom.hex
+
+.PHONY: readeep fuse knock
 
 flash: hex
 	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U flash:w:$(PRG).hex
