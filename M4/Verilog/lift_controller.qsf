@@ -42,6 +42,7 @@ set_global_assignment -name TOP_LEVEL_ENTITY lift_controller
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION "13.0 SP1"
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "23:52:04  NOVEMBER 10, 2014"
 set_global_assignment -name LAST_QUARTUS_VERSION "13.0 SP1"
+set_global_assignment -name SYSTEMVERILOG_FILE lift_controller.sv
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR "-1"
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
@@ -75,5 +76,3 @@ set_location_assignment PIN_18 -to led[6]
 set_location_assignment PIN_19 -to led[7]
 set_location_assignment PIN_20 -to led[8]
 set_location_assignment PIN_21 -to led[9]
-set_global_assignment -name SYSTEMVERILOG_FILE lift_timer.sv
-set_global_assignment -name SYSTEMVERILOG_FILE lift_controller.sv
