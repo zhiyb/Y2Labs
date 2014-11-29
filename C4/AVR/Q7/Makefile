@@ -2,7 +2,7 @@
 # Modified by zhiyb (Yubo Zhi)
 
 PRG	= Tester
-SRC	= main.cpp
+SRC	= main.cpp sequence7.cpp
 SUBDIRS = libtft-cpp
 MCU_TARGET	= atmega644p
 OPTIMIZE	= -Os
