@@ -21,13 +21,13 @@
 timeunit 1ns;
 timeprecision 100ps;
 
-module lift_controller (input logic clock, n_reset, top, middle_plus, middle_minus, bottom, call0, call1, call2,
+module lift_controller (input logic clock, n_reset, top, middle_plus, middle_minus, bottom, call0, call1, call2, emergency, emCancel,
   output logic direction, enable, indicator0, indicator1, indicator2,
   output logic led[9:0] // LEDs are used to display information about lift controller's behaviour
 );
 
 // SystemVerilog enumerated type for state machine states
-enum logic [2:0] {floor0, floor1, floor2, to0, to1, to2} state;
+enum logic [2:0] {floor0, floor1, floor2, to0, to1, to2, eStop} state;
 
 logic dir;
 logic call[3];
@@ -45,15 +45,15 @@ always_ff @(posedge clock, negedge n_reset)
   end
   else
   begin
-    if (state == floor0)
+    if (state == eStop || state == floor0)
       call[0] <= 1'b0;
     else if (!call0)
       call[0] <= 1'b1;
-    if (state == floor1)
+    if (state == eStop || state == floor1)
       call[1] <= 1'b0;
     else if (!call1)
       call[1] <= 1'b1;
-    if (state == floor2)
+    if (state == eStop || state == floor2)
       call[2] <= 1'b0;
     else if (!call2)
       call[2] <= 1'b1;
@@ -68,6 +68,8 @@ begin: seq
     state <= to0; //use non-blocking assignments for registered signals
     dir <= 0;
   end
+  else if (!emergency)	// Emergency stop
+    state <= eStop;
   else
   begin
     case (state)
@@ -122,9 +124,19 @@ begin: seq
     to2:
       if (!top)
         state <= floor2;
+		  
+    eStop:
+	   if (!emCancel)
+		begin
+		  state <= to0;
+		  dir <= 1'b0;
+		end
 
     default:
-      state <= to0;
+		begin
+		  state <= to0;
+		  dir <= 1'b0;
+		end
 
     endcase
   end
@@ -148,16 +160,16 @@ begin: com
   enable = '1;
 
   // leds are used to display information about the controller's operation
-  led[0] = (state == floor0);
-  led[1] = (state == floor1);
-  led[2] = (state == floor2);
-  led[3] = (state == to0);  // state to0
-  led[4] = (state == to1);  // state to1
-  led[5] = (state == to2);  // state to2
-  led[6] = 1'b0;
-  led[7] = top | middle_plus; // LEDs 7 and 8 show where the lift is:
-  led[8] = top | middle_minus; // 00-bottom, 01-mid-, 10-mid+, 11-top
-  led[9] = ~n_reset; // this led lights up if reset is active
+  led[0] = state == floor0;
+  led[1] = state == floor1;
+  led[2] = state == floor2;
+  led[3] = state == to0;
+  led[4] = state == to1;
+  led[5] = state == to2;
+  led[6] = top;
+  led[7] = middle_plus;
+  led[8] = middle_minus;
+  led[9] = bottom;
 
   case (state)
   to0:
