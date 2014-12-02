@@ -25,9 +25,9 @@ begin
 	dataop = 'd234;
 	#10ns func = 'b11;
 	op = 1'b0;
-	#10ns start = 1'b1;
+	start = 1'b1;
 	#10ns start = 1'b0;
-	#80ns func = 'b10;
+	#70ns func = 'b10;
 	#10ns oe = 1'b1;
 	#10ns func = 'b11;
 	#10ns oe = 1'b0;
@@ -41,9 +41,9 @@ begin
 	dataop = 'hAA;
 	#10ns func = 'b11;
 	op = 1'b0;
-	#10ns start = 1'b1;
-	#10ns start = 1'b0;
-	#80ns func = 'b10;
+	start = 1'b1;
+	#30ns start = 1'b0;
+	#50ns func = 'b10;
 	#10ns oe = 1'b1;
 	#10ns func = 'b11;
 	#10ns oe = 1'b0;
