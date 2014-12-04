@@ -1,17 +1,14 @@
 module test;
-
 parameter n = 8;
 
 logic start;
 logic [1:0] func;
 logic oe, ready;
 wire [n - 1:0] data;
-
 multiplier #(.n(n)) m(.*);
 
 logic op;
 logic [n - 1:0] dataop;
-
 assign data = op ? dataop : 'bz;
 
 initial
