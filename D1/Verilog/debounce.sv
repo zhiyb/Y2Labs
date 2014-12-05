@@ -2,6 +2,7 @@ module debounce #(parameter n = 12500000)
 (input logic clk, in, output logic out);
 
 logic [$clog2(n) - 1:0] count;
+assign out = count == n - 1;
 
 always_ff @(posedge clk) begin
 	if (~in)
@@ -9,7 +10,5 @@ always_ff @(posedge clk) begin
 	else if (count != n - 1)
 		count <= count + 1;
 end
-
-assign out = count == n - 1;
 
 endmodule

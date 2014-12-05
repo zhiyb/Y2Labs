@@ -22,7 +22,7 @@ module multiplier #(parameter n = 8, freq = 3330000)
 	logic [n - 1:0] Sum, M, Qin;
 	logic [n * 2 - 1:0] AQ;
 
-//`define combinational
+`define combinational
 `ifndef combinational
 	adder #(.n(n)) A(.A(AQ[n * 2 - 1:n]), .*);
 	register #(.n(n)) R(.*);

@@ -1,10 +1,3 @@
-// D1 - model solution
-// encapsulating module
-/*
-   author: tjk
-   last revision: 17 Oct' 13
-*/
-
 module multiplier #(parameter n = 8)
 		   (input logic start, input logic [1:0] func,
 		    input logic oe, output logic ready, inout [n - 1:0] data);
@@ -22,7 +15,7 @@ module multiplier #(parameter n = 8)
 	logic [n - 1:0] Sum, M, Qin;
 	logic [n * 2 - 1:0] AQ;
 
-//`define combinational
+`define combinational
 `ifndef combinational
 	adder #(.n(n)) a0 (.A(AQ[n * 2 - 1:n]), .*);
 	register #(.n(n)) r0 (.*);

@@ -2,7 +2,7 @@ module sequencer #(parameter n = 4)
 	(input logic start, clock, Q0,
 	 output logic add_shift, shift, ready, reset);
 
-enum {idle, shifting, stopped} present, next;
+enum logic [1:0] {idle, shifting, stopped} present, next;
 logic [$clog2(n) - 1:0] count, next_count;
 
 always_ff @(posedge clock)
@@ -40,10 +40,12 @@ begin
 	stopped:
 	begin
 		ready = 1'b1;
-		reset = 1'b1;
 		next_count = n - 1;
 		if (start)
+		begin
+    		reset = 1'b1;
 			next = shifting;
+		end
 	end
 	default:
 		next = idle;
