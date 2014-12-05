@@ -1,4 +1,5 @@
-module combmultiplier #(parameter n = 4) (input logic [n - 1:0] A, B, output logic [n * 2 - 1:0] Q);
+module combmultiplier #(parameter n = 4)
+(input logic [n - 1:0] A, B, output logic [n * 2 - 1:0] Q);
 
 logic a[n][n];
 logic c[n][n];
