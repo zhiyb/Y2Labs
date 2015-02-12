@@ -1,0 +1,89 @@
+*Library of SPICE bipolar transistor models
+*
+*Through hole devices
+*QBC547	NPN	general purpose T092
+*QBC557	PNP	general purpose T092
+*QZTX650 NPN	High performance e-line
+*QZTX750 PNP	High performance e-line
+*Q2N2222A NPN	Fast switching TO18
+*Q2N2907A PNP	Fast switching TO18
+*Q2N2369A NPN	Fast switching TO18
+*
+*Surface mount models
+*QBC847 NPN	General purpose SOT23
+*QBC857 PNP	General purpose SOT23
+
+
+*Models from Philips
+*
+.MODEL QBC547 NPN(IS=2.39E-14 NF=1.008 ISE=3.545E-15 NE=1.541 BF=294.3
++     IKF=0.1357 VAF=63.2 NR=1.004 ISC=6.272E-14 NC=1.243 BR=7.946
++     IKR=0.1144 VAR=25.9 RB=1 IRB=1E-06 RBM=1 RE=0.4683 RC=0.85
++     XTB=0 EG=1.11 XTI=3 CJE=1.358E-11 VJE=0.65 MJE=0.3279 TF=4.391E-10
++     XTF=120 VTF=2.643 ITF=0.7495 PTF=0 CJC=3.728E-12 VJC=0.3997
++     MJC=0.2955 XCJC=0.6193 TR=9E-8 CJS=0 VJS=0.75 MJS=0.333 FC=0.9579 )
+*
+*
+.MODEL QBC557B PNP(IS=3.834E-14 NF=1.008 ISE=1.219E-14 NE=1.528 BF=344.4
++     IKF=0.08039 VAF=21.11 NR=1.005 ISC=2.852E-13 NC=1.28 BR=14.84 IKR=0.047
++     VAR=32.02 RB=1 IRB=1E-06 RBM=1 RE=0.6202 RC=0.5713 XTB=0 EG=1.11 XTI=3
++     CJE=1.23E-11 VJE=0.6106 MJE=0.378 TF=5.595E-10 XTF=3.414 VTF=5.23
++     ITF=0.1483 PTF=0 CJC=1.084E-11 VJC=0.1022 MJC=0.3563 XCJC=0.6288
++     TR=9E-8 CJS=0 VJS=0.75 MJS=0.333 FC=0.8027 )
+*
+*
+*ZETEX  ZTX650 Spice model   Last revision  16/1/91
+*
+.MODEL QZTX650 NPN IS =2.218E-13 NF =.9956 BF =230 IKF=2 VAF=100 ISE=2.9E-14
++NE =1.35 NR =.995 BR =56 IKR=1 VAR=30 ISC=2.971E-13 NC =1.321 RB =.04
++RE =.075 RC =.069 CJC=51E-12 MJC=.42 VJC=.595 CJE=318E-12 TF =.77E-9
++TR =27E-9
+*
+*
+*ZETEX  ZTX750 Spice model   Last revision  23/1/91
+*
+.MODEL QZTX750 PNP IS =2.715E-13 BF =170 VAF=70 NF =1.004 IKF=2.75 ISE=1E-13
++NE =1.535 BR =23 VAR=40 NR =1.005 IKR=.55 ISC=5.15E-14 NC =1.13 RB =.07
++RE =.065 RC =.085 CJE=360E-12 TF =.94E-9 CJC=90E-12 TR =60E-9 VJC=.705
++MJC=.46
+*
+*
+.model Q2N2222A	NPN(Is=14.34f Xti=3 Eg=1.11 Vaf=74.03 Bf=255.9 Ne=1.307
++		Ise=14.34f Ikf=.2847 Xtb=1.5 Br=6.092 Nc=2 Isc=0 Ikr=0 Rc=1
++		Cjc=7.306p Mjc=.3416 Vjc=.75 Fc=.5 Cje=22.01p Mje=.377 Vje=.75
++		Tr=46.91n Tf=411.1p Itf=.6 Vtf=1.7 Xtf=3 Rb=10)
+*		National
+*		88-09-07 bam	creation
+.model Q2N2907A	PNP(Is=650.6E-18 Xti=3 Eg=1.11 Vaf=115.7 Bf=231.7 Ne=1.829
++		Ise=54.81f Ikf=1.079 Xtb=1.5 Br=3.563 Nc=2 Isc=0 Ikr=0 Rc=.715
++		Cjc=14.76p Mjc=.5383 Vjc=.75 Fc=.5 Cje=19.82p Mje=.3357 Vje=.75
++		Tr=111.3n Tf=603.7p Itf=.65 Vtf=5 Xtf=1.7 Rb=10)
+*		National
+*		88-09-09 bam	creation
+*
+.model Q2N2369A	NPN(Is=44.14f Xti=3 Eg=1.11 Vaf=100 Bf=78.32 Ne=1.389
++		Ise=91.95f Ikf=.3498 Xtb=1.5 Br=12.69m Nc=2 Isc=0 Ikr=0 Rc=.6
++		Cjc=2.83p Mjc=86.19m Vjc=.75 Fc=.5 Cje=4.5p Mje=.2418 Vje=.75
++		Tr=1.073u Tf=227.6p Itf=.3 Vtf=4 Xtf=4 Rb=10)
+*		National
+*		88-09-07 bam	creation
+*
+*Philips models
+*
+.MODEL QBC847 NPN(IS = 2.375E-14 NF = 0.9925 ISE = 5.16E-16 NE = 1.3 BF = 524.9 
++     IKF = 0.09 VAF = 49.77 NR = 0.9931 ISC = 7.064E-12 NC = 1.78 BR = 10.04 
++     IKR = 0.132 VAR = 16 RB = 10 IRB = 5E-06 RBM = 5 RE = 0.653 RC = 0.78 
++     XTB = 0 EG = 1.11 XTI = 3 CJE = 1.132E-11 VJE = 0.7685 MJE = 0.3733 
++     TF = 4.258E-10 XTF = 6.319 VTF = 6.4 ITF = 0.1845 PTF = 0 CJC = 3.379E-12 
++     VJC = 0.5444 MJC = 0.3968 XCJC = 0.6193 TR = 9.5E-08 CJS = 0 VJS = 0.75 
++     MJS = 0.333 FC = 0.999) 
+*
+*
+.MODEL QBC857 PNP(IS = 3.258E-14 NF = 0.999 ISE = 3.003E-15 NE = 1.45 BF = 515.4 
++     IKF = 0.066 VAF = 25 NR = 0.9985 ISC = 4.393E-15 NC = 1.2 BR = 15.26 IKR = 0.039 
++     VAR = 8 RB = 10 IRB = 5E-06 RBM = 5 RE = 0.7071 RC = 0.58 XTB = 0 EG = 1.11 
++     XTI = 3 CJE = 1.024E-11 VJE = 0.9 MJE = 0.453 TF = 5.971E-10 XTF = 4.137 
++     VTF = 6.31 ITF = 0.2108 PTF = 0 CJC = 6.345E-12 VJC = 0.4254 MJC = 0.423 
++     XCJC = 0.6288 TR = 3.5E-08 CJS = 0 VJS = 0.75 MJS = 0.333 FC = 0.78) 
+*
+*
