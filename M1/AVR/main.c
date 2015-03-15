@@ -25,17 +25,15 @@ int main(void)
 loop:
 	while (PIND & BUTTON);
 
-	p = &RAM(0);
-	do {
+	for (p = &RAM(0); p != &RAM(0x2000); p++) {
 		*p = BUFFER;
 		SAMPLE_DELAY();
-	} while (p++ != &RAM(0x1FFF));
+	}
 
-	p = &RAM(0);
-	do {
+	for (p = &RAM(0); p != &RAM(0x2000); p++) {
 		LATCH = *p;
 		PLAYBACK_DELAY();
-	} while (p++ != &RAM(0x1FFF));
+	}
 	goto loop;
 
 	return 1;
