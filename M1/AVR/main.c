@@ -16,9 +16,7 @@ int main(void)
 		*RAM(i + 0x10) = i;
 
 loop:
-	*RAM(0) = *BUFFER;
-	uint8_t d = *RAM(0);
-	*LATCH = d;
+	*RAM(0) = *LATCH = *BUFFER;
 	goto loop;
 
 	return 1;
