@@ -6,8 +6,7 @@
 #define LATCH	(*(volatile uint8_t *)0x2000)
 
 #define SAMPLE_DELAY()		_delay_us(1220)
-#define PLAYBACK_DELAY()	_delay_us(1220)
-//#define	PLAYBACK_DELAY()	_delay_us(4883)
+#define	PLAYBACK_DELAY()	_delay_us(4883)
 #define BUTTON	(1 << 0)
 
 void init(void)
