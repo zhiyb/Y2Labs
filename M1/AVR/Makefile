@@ -16,7 +16,7 @@ INCS	+= -I.
 
 EFUSE	= 0xFF
 HFUSE	= 0xD9
-LFUSE	= 0xE2
+LFUSE	= 0x62
 
 LOG	= ~/.make_avr.log
 
