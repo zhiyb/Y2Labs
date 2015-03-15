@@ -1,22 +1,42 @@
 #include <avr/io.h>
+#include <util/delay.h>
 
-#define RAM(a)	((volatile uint8_t *)(0x8000 | (a)))
-#define BUFFER	((volatile uint8_t *)0x4000)
-#define LATCH	((volatile uint8_t *)0x2000)
+#define RAM(a)	(*(volatile uint8_t *)(0x8000 | (a)))
+#define BUFFER	(*(volatile uint8_t *)0x4000)
+#define LATCH	(*(volatile uint8_t *)0x2000)
 
-int main(void)
+#define SAMPLE_DELAY()		_delay_us(1220)
+#define PLAYBACK_DELAY()	_delay_us(1220)
+//#define	PLAYBACK_DELAY()	_delay_us(4883)
+#define BUTTON	(1 << 0)
+
+void init(void)
 {
 	MCUCR |= _BV(SRE);
 
-	*RAM(8) = 0x55;
-	*RAM(9) = 0xAA;
+	DDRD &= ~BUTTON;
+	PORTD |= BUTTON;
+}
 
-	uint8_t i;
-	for (i = 0; i < 128; i++)
-		*RAM(i + 0x10) = i;
+int main(void)
+{
+	volatile uint8_t *p;
+	init();
 
 loop:
-	*RAM(0) = *LATCH = *BUFFER;
+	while (PIND & BUTTON);
+
+	p = &RAM(0);
+	do {
+		*p = BUFFER;
+		SAMPLE_DELAY();
+	} while (p++ != &RAM(0x1FFF));
+
+	p = &RAM(0);
+	do {
+		LATCH = *p;
+		PLAYBACK_DELAY();
+	} while (p++ != &RAM(0x1FFF));
 	goto loop;
 
 	return 1;

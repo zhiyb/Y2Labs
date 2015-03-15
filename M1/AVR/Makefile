@@ -10,7 +10,7 @@ PRGER	= c232hm
 MCU_TARGET	= atmega162
 OPTIMIZE	= -Os
 
-DEFS	+= -DF_CPU=8000000
+DEFS	+= -DF_CPU=1000000
 LIBS	+= -lm
 INCS	+= -I.
 
