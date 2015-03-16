@@ -20,4 +20,4 @@ LFUSE	= 0x62
 
 LOG	= ~/.make_avr.log
 
-include Makefile.inc
+include ../Makefile.inc
