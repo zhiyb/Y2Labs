@@ -22,7 +22,7 @@ void lift(void)
 		t = (~t) & 0x7F;	// Lift is negative logic
 		switch (State) {
 		case To0:
-			q = MotorOn | MotorDown | Lamp0;
+			q = MotorOn | MotorDn | Lamp0;
 			if (t & Floor0)
 				State = At0;
 			else
@@ -44,7 +44,7 @@ void lift(void)
 			break;
 		case At2:
 			q = STATIC;
-			if (t & Button0)
+			if (t & (Button0 | Button1))
 				State = To0;
 			else
 				State = At2;
