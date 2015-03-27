@@ -17,7 +17,6 @@ $(foreach dir,$(SUBDIRS),$(eval $(call inc_subdir,$(dir))))
 LIBDIRS	= $(LIB:%=$(LIBDIR)/lib%)
 LIBFILES	= $(foreach lib,$(LIB),$(lib:%=$(LIBDIR)/lib%)/$(lib:%=lib%.a))
 
-export DEFS
 DEFS	+=
 #DEFS	+= -fpack-struct -fshort-enums
 #DEFS	+= -funsigned-bitfields -funsigned-char
