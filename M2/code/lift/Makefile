@@ -11,7 +11,7 @@ MCU_TARGET	= atmega162
 OPTIMIZE	= -Os
 
 # FreeRTOS related
-DEFS	+= -DGCC_MEGA_AVR_162
+RTOSPORT	= ATMega162
 
 DEFS	+= -DF_CPU=8000000
 LIBS	+= -lm

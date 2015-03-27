@@ -1,6 +1,19 @@
 # http://www.nongnu.org/avr-libc/user-manual/group__demo__project.html
 # Modified by zhiyb (Yubo Zhi)
 
+# Subdirectories
+define inc_subdir
+DIR	= $(1)
+include $(1)/Makefile
+SRC	+= $$(NSRC:%=$$(DIR)/%)
+LIB	+= $$(NLIB)
+LIBS	+= $$(NLIBS)
+DEFS	+= $$(NDEFS)
+INCDIRS	+= $$(NINCDIRS:%=$$(DIR)/%)
+endef
+
+$(foreach dir,$(SUBDIRS),$(eval $(call inc_subdir,$(dir))))
+
 LIBDIRS	= $(LIB:%=$(LIBDIR)/lib%)
 LIBFILES	= $(foreach lib,$(LIB),$(lib:%=$(LIBDIR)/lib%)/$(lib:%=lib%.a))
 
@@ -8,7 +21,7 @@ export DEFS
 DEFS	+=
 #DEFS	+= -fpack-struct -fshort-enums
 #DEFS	+= -funsigned-bitfields -funsigned-char
-NLIBS	+= $(LIBDIRS:%=-L%) $(LIB:%=-l%)
+NLIBS	= $(LIBDIRS:%=-L%) $(LIB:%=-l%)
 INCS	+= $(LIBDIRS:%=-I%)
 INCS	+= $(INCDIRS:%=-I%)
 
@@ -34,16 +47,6 @@ override ASFLAGS	= $(DEFS) $(INCS) $(FLAGS)
 override CFLAGS		= $(DEFS) $(INCS) $(FLAGS)
 override CXXFLAGS	= $(DEFS) $(INCS) $(FLAGS)
 override LDFLAGS	= $(FLAGS) -Wl,-Map,$(PRG).map
-
-# Subdirectories
-define inc_subdir
-DIR	= $(1)
-include $(1)/Makefile
-SRC	+= $$(NSRC:%=$$(DIR)/%)
-INCDIRS	+= $$(NINCDIRS:%=$$(DIR)/%)
-endef
-
-$(foreach dir,$(SUBDIRS),$(eval $(call inc_subdir,$(dir))))
 
 # Rules
 all: elf lst text eeprom
