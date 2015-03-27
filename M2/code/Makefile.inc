@@ -21,7 +21,7 @@ export DEFS
 DEFS	+=
 #DEFS	+= -fpack-struct -fshort-enums
 #DEFS	+= -funsigned-bitfields -funsigned-char
-NLIBS	= $(LIBDIRS:%=-L%) $(LIB:%=-l%)
+NEWLIBS	= $(LIBDIRS:%=-L%) $(LIB:%=-l%)
 INCS	+= $(LIBDIRS:%=-I%)
 INCS	+= $(INCDIRS:%=-I%)
 
@@ -54,7 +54,7 @@ PHONYTRGS	+= elf lst map
 
 CLEAN_FILES	+= $(OBJS)
 $(PRG).elf: $(OBJS) $(LIBFILES)
-	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(NLIBS) $(LIBS)
+	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(NEWLIBS) $(LIBS)
 	$(SIZE) $@
 
 %.o: %.c
