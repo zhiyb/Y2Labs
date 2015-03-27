@@ -8,10 +8,11 @@ export DEFS
 DEFS	+=
 #DEFS	+= -fpack-struct -fshort-enums
 #DEFS	+= -funsigned-bitfields -funsigned-char
-NLIBS	+= $(addprefix -L./,$(LIBDIRS)) $(addprefix -l$,$(LIB))
-INCS	+= $(addprefix -I./,$(LIBDIRS))
+NLIBS	+= $(LIBDIRS:%=-L%) $(LIB:%=-l%)
+INCS	+= $(LIBDIRS:%=-I%)
+INCS	+= $(INCDIRS:%=-I%)
 
-OBJS	= $(subst .S,.o,$(subst .c,.o,$(subst .cpp,.o,$(SRC))))
+OBJS	= $(subst .S,.o,$(subst .c,.o,$(SRC:.cpp=.o)))
 DEPS	= $(OBJS:.o=.d)
 
 AS	= avr-gcc
@@ -34,6 +35,17 @@ override CFLAGS		= $(DEFS) $(INCS) $(FLAGS)
 override CXXFLAGS	= $(DEFS) $(INCS) $(FLAGS)
 override LDFLAGS	= $(FLAGS) -Wl,-Map,$(PRG).map
 
+# Subdirectories
+define inc_subdir
+DIR	= $(1)
+include $(1)/Makefile
+SRC	+= $$(NSRC:%=$$(DIR)/%)
+INCDIRS	+= $$(NINCDIRS:%=$$(DIR)/%)
+endef
+
+$(foreach dir,$(SUBDIRS),$(eval $(call inc_subdir,$(dir))))
+
+# Rules
 all: elf lst text eeprom
 PHONYTRGS	+= elf lst map
 

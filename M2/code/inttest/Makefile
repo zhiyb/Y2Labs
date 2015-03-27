@@ -1,19 +1,17 @@
 # Modified by zhiyb (Yubo Zhi)
 
-PRG	:= inttest
-SRC	:= inttest.c
-LIB	:= 
-LIBDIR	:= ../lib
-VERSION	:= 0.0.1
+PRG	= inttest
+SRC	= inttest.c
+INCDIRS	= ../inc
+VERSION	= 0.0.1
 
 PRGER	= usbasp
 MCU_TARGET	= atmega162
 OPTIMIZE	= -Os
 
-DEFS	+= -DF_CPU=12000000
-#DEFS	+= -DTFT_VERTICALSCROLLING
+DEFS	+= -DF_CPU=8000000
 LIBS	+= -lm
-INCS	+= -I. -I../inc
+INCS	+=
 
 EFUSE	= 0xFF
 HFUSE	= 0x9C
