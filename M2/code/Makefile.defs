@@ -1,6 +1,23 @@
 # http://www.nongnu.org/avr-libc/user-manual/group__demo__project.html
 # Modified by zhiyb (Yubo Zhi)
 
+# Outdated warning
+define outdated
+$(warning "$$($1) outdated, use $$($2) instead")
+endef
+
+ifndef LIBTRG
+# Defaults
+MCU_TARGET	?= atmega644p
+ifdef MCU_FREQ
+DEFS		+= -DF_CPU=$(MCU_FREQ)
+else
+$(warning "Please use $$(MCU_FREQ)")
+endif
+OPTLEVEL	?= s
+LOG		?= ~/.make_avr.log
+endif
+
 # Subdirectories
 define inc_subdir
 DIR	= $(1)
@@ -14,10 +31,19 @@ endef
 
 $(foreach dir,$(SUBDIRS),$(eval $(call inc_subdir,$(dir))))
 
+# Libs
+LIBDIR	?= ..
 LIBDIRS	= $(LIB:%=$(LIBDIR)/lib%)
 LIBFILES	= $(foreach lib,$(LIB),$(lib:%=$(LIBDIR)/lib%)/$(lib:%=lib%.a))
 
-DEFS	+=
+ifndef LIBTRG
+# General
+ifndef TRG
+$(call outdated,PRG,TRG)
+TRG	= $(PRG)
+endif
+endif
+
 #DEFS	+= -fpack-struct -fshort-enums
 #DEFS	+= -funsigned-bitfields -funsigned-char
 NEWLIBS	= $(LIBDIRS:%=-L%) $(LIB:%=-l%)
@@ -27,6 +53,7 @@ INCS	+= $(INCDIRS:%=-I%)
 OBJS	= $(subst .S,.o,$(subst .c,.o,$(SRC:.cpp=.o)))
 DEPS	= $(OBJS:.o=.d)
 
+AR	= avr-ar
 AS	= avr-gcc
 CC	= avr-gcc
 CXX	= avr-g++
@@ -35,38 +62,82 @@ OBJCOPY	= avr-objcopy
 OBJDUMP	= avr-objdump
 SIZE	= avr-size
 AVRDUDE	= avrdude
-REMOVE	= rm -f
 
-FLAGS	+= -g -Wall -Werror
+FLAGS	?= -g -Wall -Werror
+ifdef OPTIMIZE
+ifndef LIBTRG
+$(call outdated,OPTIMIZE,OPTLEVEL)
+endif
 FLAGS	+= $(OPTIMIZE)
+else
+FLAGS	+= -O$(OPTLEVEL)
+endif
 FLAGS	+= -mmcu=$(MCU_TARGET)
 
+# Exports
+export DEFS MCU_TARGET OPTIMIZE OPTLEVEL
+# Not needed?
+#export MCU_FREQ
+
+ARFLAGS	= rcs
 # Override is only needed by avr-lib build system.
 override ASFLAGS	= $(DEFS) $(INCS) $(FLAGS)
 override CFLAGS		= $(DEFS) $(INCS) $(FLAGS)
 override CXXFLAGS	= $(DEFS) $(INCS) $(FLAGS)
-override LDFLAGS	= $(FLAGS) -Wl,-Map,$(PRG).map
+override LDFLAGS	= $(FLAGS) -Wl,-Map,$(TRG).map
+
+# Verbose display
+define verbose
+	@if [ 'x$(VERBOSE)' = x ]; then	\
+		echo "  "$1;		\
+	else				\
+		echo $2;		\
+	fi
+	@$2
+endef
 
 # Rules
+ifdef LIBTRG
+all: lib
+else
 all: elf lst text eeprom
 PHONYTRGS	+= elf lst map
+endif
 
 CLEAN_FILES	+= $(OBJS)
-$(PRG).elf: $(OBJS) $(LIBFILES)
-	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(NEWLIBS) $(LIBS)
-	$(SIZE) $@
+$(TRG).elf: $(OBJS) $(LIBFILES)
+	$(call verbose,"LD\t$@",\
+	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(NEWLIBS) $(LIBS))
+	$(call verbose,"SIZE\t$@",\
+	$(SIZE) $@)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(call verbose,"CC\t$@",\
+	$(CC) $(CFLAGS) -c -o $@ $<)
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(call verbose,"CXX\t$@",\
+	$(CXX) $(CXXFLAGS) -c -o $@ $<)
 
 %.o: %.S
-	$(AS) $(ASFLAGS) -c -o $@ $<
+	$(call verbose,"AS\t$@",\
+	$(AS) $(ASFLAGS) -c -o $@ $<)
 
 %.lst: %.elf
-	$(OBJDUMP) -h -S $< > $@
+	$(call verbose,"GEN\t$@",\
+	$(OBJDUMP) -h -S $< > $@)
+
+# Rule for building library
+.PHONY: lib
+lib: lib-static
+
+.PHONY: lib-static
+lib-static: lib$(LIBTRG).a
+CLEAN_FILES	+= lib$(LIBTRG).a
+	
+lib$(LIBTRG).a: $(OBJS)
+	$(call verbose,"AR\t$@",\
+	$(AR) $(ARFLAGS) $@ $(OBJS))
 
 # Libraries
 $(LIBFILES): %:
@@ -89,15 +160,20 @@ CLEAN_FILES	+= $(DEPS) $(DEPS:%=%.*)
 	rm -f $@.$$$$
 
 # Clean up
+ifndef LIBTRG
 CLEAN_DIRS	+= $(LIBDIRS:%=clean-%)
+endif
 .PHONY: $(CLEAN_DIRS)
 $(CLEAN_DIRS):
 	$(MAKE) -C $(@:clean-%=%) clean
 
 .PHONY: clean
 clean: $(CLEAN_DIRS)
-	$(REMOVE) $(CLEAN_FILES)
+	$(call verbose,"CLEAN\t$(CLEAN_FILES)",\
+	$(RM) $(CLEAN_FILES))
 
+# Following are not needed when building libraries
+ifndef LIBTRG
 # Rules for building the .text rom images
 # Only hex is needed; Others: bin, srec
 .PHONY: text
@@ -105,49 +181,55 @@ text: hex
 PHONYTRGS	+= hex bin srec
 
 %.hex: %.elf
-	$(OBJCOPY) -j .text -j .data -O ihex $< $@
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .text -j .data -O ihex $< $@)
 
 %.srec: %.elf
-	$(OBJCOPY) -j .text -j .data -O srec $< $@
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .text -j .data -O srec $< $@)
 
 %.bin: %.elf
-	$(OBJCOPY) -j .text -j .data -O binary $< $@
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .text -j .data -O binary $< $@)
 
 # Rules for building the .eeprom rom images
 # Only ehex is needed; Others: ebin, esrec
 .PHONY: eeprom
 eeprom:	ehex
-EEPFILE ?= $(PRG)_eeprom.hex
+EEPFILE ?= $(TRG)_eeprom.hex
 
 EEPTRGS	+= ehex ebin esrec
-CLEAN_FILES	+= $(EEPTRGS:e%=$(PRG)_eeprom.%)
+CLEAN_FILES	+= $(EEPTRGS:e%=$(TRG)_eeprom.%)
 .PHONY: $(EEPTRGS)
-$(EEPTRGS): e%: $(PRG)_eeprom.%
+$(EEPTRGS): e%: $(TRG)_eeprom.%
 
 %_eeprom.hex: %.elf
-	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex $< $@
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex $< $@)
 
 %_eeprom.srec: %.elf
-	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O srec $< $@
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O srec $< $@)
 
 %_eeprom.bin: %.elf
-	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O binary $< $@
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O binary $< $@)
 
 # For program MCU with avrdude.
 AVROPS	= flash readflash eep readeep fuse flashall
 .PHONY: $(AVROPS) $(AVROPS:%=avr-%) knock
 
 $(AVROPS): %: avr-%
-	echo $(shell date '+%Y-%m-%d %H:%M:%S'), $(PRGER), $(MCU_TARGET), $@, $(PWD), $(PRG).hex >> $(LOG)
+	echo $(shell date '+%Y-%m-%d %H:%M:%S'), $(PRGER), $(MCU_TARGET), $@, $(PWD), $(TRG).hex >> $(LOG)
 
 avr-flash: hex
-	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U flash:w:$(PRG).hex
+	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U flash:w:$(TRG).hex
 
 avr-flashall: hex ehex
-	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U flash:w:$(PRG).hex -U eeprom:w:$(EEPFILE)
+	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U flash:w:$(TRG).hex -U eeprom:w:$(EEPFILE)
 
 avr-readflash:
-	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U flash:r:$(PRG).hex:i
+	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U flash:r:$(TRG).hex:i
 
 avr-eep: ehex
 	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U eeprom:w:$(EEPFILE)
@@ -160,8 +242,9 @@ avr-fuse:
 
 knock:
 	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET)
+endif
 
 # PHONY targets
 .PHONY: $(PHONYTRGS)
-$(PHONYTRGS): %: $(PRG).%
-CLEAN_FILES	+= $(PHONYTRGS:%=$(PRG).%)
+$(PHONYTRGS): %: $(TRG).%
+CLEAN_FILES	+= $(PHONYTRGS:%=$(TRG).%)
