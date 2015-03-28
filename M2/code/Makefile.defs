@@ -134,7 +134,7 @@ lib: lib-static
 .PHONY: lib-static
 lib-static: lib$(LIBTRG).a
 CLEAN_FILES	+= lib$(LIBTRG).a
-	
+
 lib$(LIBTRG).a: $(OBJS)
 	$(call verbose,"AR\t$@",\
 	$(AR) $(ARFLAGS) $@ $(OBJS))
