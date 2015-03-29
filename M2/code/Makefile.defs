@@ -141,7 +141,8 @@ lib$(LIBTRG).a: $(OBJS)
 
 # Libraries
 $(LIBFILES): %:
-	$(MAKE) -C $(dir $@)
+	$(call verbose,"MAKE\t$@",\
+	$(MAKE) -C $(dir $@))
 
 # Dependency
 CLEAN_FILES	+= $(DEPS) $(DEPS:%=%.*)
@@ -165,7 +166,8 @@ CLEAN_DIRS	+= $(LIBDIRS:%=clean-%)
 endif
 .PHONY: $(CLEAN_DIRS)
 $(CLEAN_DIRS):
-	$(MAKE) -C $(@:clean-%=%) clean
+	$(call verbose,"CLEAN\t$(@:clean-%=%)",\
+	$(MAKE) -C $(@:clean-%=%) clean)
 
 .PHONY: clean
 clean: $(CLEAN_DIRS)
