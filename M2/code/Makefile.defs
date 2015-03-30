@@ -127,6 +127,7 @@ $(TRG).elf: $(OBJS) $(LIBFILES)
 	$(call verbose,"GEN\t$@",\
 	$(OBJDUMP) -h -S $< > $@)
 
+ifdef LIBTRG
 # Rule for building library
 .PHONY: lib
 lib: lib-static
@@ -138,6 +139,7 @@ CLEAN_FILES	+= lib$(LIBTRG).a
 lib$(LIBTRG).a: $(OBJS)
 	$(call verbose,"AR\t$@",\
 	$(AR) $(ARFLAGS) $@ $(OBJS))
+endif
 
 # Libraries
 $(LIBFILES): %:
