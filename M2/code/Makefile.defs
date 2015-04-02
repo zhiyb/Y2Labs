@@ -20,13 +20,13 @@ endif
 
 # Subdirectories
 define inc_subdir
-DIR	= $(1)
+DIR	:= $(1)
 include $(1)/Makefile
-SRC	+= $$(NSRC:%=$$(DIR)/%)
-LIB	+= $$(NLIB)
-LIBS	+= $$(NLIBS)
-DEFS	+= $$(NDEFS)
-INCDIRS	+= $$(NINCDIRS:%=$$(DIR)/%)
+SRC	:= $$(SRC) $$(NSRC:%=$$(DIR)/%)
+LIB	:= $$(LIB) $$(NLIB)
+LIBS	:= $$(LIBS) $$(NLIBS)
+DEFS	:= $$(DEFS) $$(NDEFS)
+INCDIRS	:= $$(INCDIRS) $$(DIR) $$(NINCDIRS:%=$$(DIR)/%)
 endef
 
 $(foreach dir,$(SUBDIRS),$(eval $(call inc_subdir,$(dir))))
