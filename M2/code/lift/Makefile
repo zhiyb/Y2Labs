@@ -1,7 +1,7 @@
 # Modified by zhiyb (Yubo Zhi)
 
 TRG	= lift
-SRC	= lift.c lift_code.c util.c
+SRC	= lift.c lift_code.c
 SUBDIRS	= ../rtos
 INCDIRS	= ../inc
 

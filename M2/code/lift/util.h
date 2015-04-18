@@ -3,4 +3,7 @@
 */
 #include "FreeRTOS.h"
 
-portTickType Seconds2Ticks(const float);
+static inline portTickType Seconds2Ticks(const float s)
+{
+	return (portTickType) (s * configTICK_RATE_HZ);
+}
