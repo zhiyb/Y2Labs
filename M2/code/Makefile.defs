@@ -112,15 +112,15 @@ $(TRG).elf: $(OBJS) $(LIBFILES)
 	$(SIZE) $@)
 
 %.o: %.c
-	$(call verbose,"CC\t$@",\
+	$(call verbose,"CC\t$<",\
 	$(CC) $(CFLAGS) -c -o $@ $<)
 
 %.o: %.cpp
-	$(call verbose,"CXX\t$@",\
+	$(call verbose,"CXX\t$<",\
 	$(CXX) $(CXXFLAGS) -c -o $@ $<)
 
 %.o: %.S
-	$(call verbose,"AS\t$@",\
+	$(call verbose,"AS\t$<",\
 	$(AS) $(ASFLAGS) -c -o $@ $<)
 
 %.lst: %.elf
@@ -152,15 +152,13 @@ CLEAN_FILES	+= $(DEPS) $(DEPS:%=%.*)
 
 %.d: %.c
 	@set -e; rm -f $@; \
-	$(CC) -MM $(CFLAGS) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
+	$(CC) -MM $(CFLAGS) $< | \
+	sed 's,[^:]*\.o[ :]*,$(<:.c=.o) $@ : ,g' > $@;
 
 %.d: %.cpp
 	@set -e; rm -f $@; \
-	$(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
+	$(CXX) -MM $(CXXFLAGS) $< | \
+	sed 's,[^:]*\.o[ :]*,$(<:.cpp=.o) $@ : ,g' > $@;
 
 # Clean up
 ifndef LIBTRG
