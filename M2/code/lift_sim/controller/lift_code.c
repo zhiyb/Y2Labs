@@ -11,8 +11,6 @@ void lift(void)
 {
 	unsigned char t, q = STATIC, dir = 0, btn = 0;
 	unsigned char State = To0;	// Start going down.
-	MCUCR |= 0x80;			// Disable JTAG
-	MCUCR |= 0x80;
 	PORTA = 0xFF;
 	DDRC = 0x00;
 	PORTC = 0xFF;
@@ -29,8 +27,14 @@ void lift(void)
 			break;
 		case To1:
 			q = MotorOn | dir;
-			if (t & Floor1m && t & Floor1p && btn & Button1)
-				State = At1;
+			if (t & Floor1m && t & Floor1p) {
+				if (btn & Button1)
+					State = At1;
+				else if (dir)	// Moving downward
+					State = To0;
+				else
+					State = To2;
+			}
 			break;
 		case To2:
 			q = MotorOn;

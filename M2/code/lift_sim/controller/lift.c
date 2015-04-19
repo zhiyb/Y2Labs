@@ -6,8 +6,10 @@
 
 void Init(void)
 {				//Set DDR-registers and initial state of the LEDs
+	MCUCR |= 0x80;			// Disable JTAG
+	MCUCR |= 0x80;
 	DDRC = 0xff;		// Set port C direction to outputs.  Start with all output off.
-	PORTC = 0x00;
+	PORTC = 0xff;
 	DDRA = 0xff;		//Lift Control
 	DDRC = 0x00;		//Lift Sense
 }
