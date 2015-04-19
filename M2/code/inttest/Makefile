@@ -11,7 +11,7 @@ MCU_FREQ	= 8000000
 LIBS	+= -lm
 
 EFUSE	= 0xFF
-HFUSE	= 0x9C
-LFUSE	= 0xE7
+HFUSE	= 0xD9
+LFUSE	= 0x62
 
 include ../Makefile.defs
