@@ -13,7 +13,7 @@ This task spends most of its time sleeping, so the infinite loop does not stop o
 */
 void lift(void)
 {
-	unsigned char t, q = STATIC, dir = 0, btn = 0;
+	unsigned char t = 0, q = STATIC, dir = 0, btn = 0;
 	unsigned char State = To0;	// Start going down.
 	PORTA = 0xFF;
 	DDRC = 0x00;
@@ -22,13 +22,20 @@ void lift(void)
 	// We must take care enabelling interupts as we dont know what else is going on.
 	portENTER_CRITICAL();		// Create queue and enable interupts. Dont want anything getting in the way
 	xRxedChars = xQueueCreate(4, (unsigned portBASE_TYPE)sizeof(signed portCHAR));
+        MCUCR |= 0x03;
 	PCMSK1 = 0x7F;		// Enable PORTC pin change interrupts
-	GICR = 0x10;		// Enable pin change interrupt 1
+	GICR = 0x10 | 0x40;		// Enable pin change interrupt 1 & external interrupt 0
 	portEXIT_CRITICAL();
 
 	for (;;) {
 		unsigned char store;
-		while (!xQueueReceive(xRxedChars, &store, 250));	// never time out
+		while (!xQueueReceive(xRxedChars, &store, portMAX_DELAY));	// never time out
+		if (store == 0x00) {	// 0x00 means RESET
+			while (xQueueReceive(xRxedChars, &store, 0));	// Clear queue
+			State = To0;
+			btn = 0;
+			goto run;
+		}
 		t = ~store & 0x7F;	// read lift sensors (negative logic)
 		btn |= t & (Button0 | Button1 | Button2);
 run:
@@ -104,4 +111,11 @@ ISR(PCINT1_vect)
 	static portCHAR prt;
 	prt = PINC;	//Post value of PINC to queue
 	xQueueSendFromISR(xRxedChars, &prt, pdFALSE);
+}
+
+ISR(INT0_vect)
+{	// Reset
+	static portCHAR data;
+	data = 0x00;		// 0x00 means RESET
+	xQueueSendFromISR(xRxedChars, &data, pdFALSE);
 }
