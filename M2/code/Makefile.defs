@@ -1,0 +1,252 @@
+# http://www.nongnu.org/avr-libc/user-manual/group__demo__project.html
+# Modified by zhiyb (Yubo Zhi)
+
+# Outdated warning
+define outdated
+$(warning "$$($1) outdated, use $$($2) instead")
+endef
+
+ifndef LIBTRG
+# Defaults
+MCU_TARGET	?= atmega644p
+ifdef MCU_FREQ
+DEFS		+= -DF_CPU=$(MCU_FREQ)
+else
+$(warning "Please use $$(MCU_FREQ)")
+endif
+OPTLEVEL	?= s
+LOG		?= ~/.make_avr.log
+endif
+
+# Subdirectories
+define inc_subdir
+DIR	:= $(1)
+include $(1)/Makefile
+SRC	:= $$(SRC) $$(NSRC:%=$$(DIR)/%)
+LIB	:= $$(LIB) $$(NLIB)
+LIBS	:= $$(LIBS) $$(NLIBS)
+DEFS	:= $$(DEFS) $$(NDEFS)
+INCDIRS	:= $$(INCDIRS) $$(DIR) $$(NINCDIRS:%=$$(DIR)/%)
+endef
+
+$(foreach dir,$(SUBDIRS),$(eval $(call inc_subdir,$(dir))))
+
+# Libs
+LIBDIR	?= ..
+LIBDIRS	= $(LIB:%=$(LIBDIR)/lib%)
+LIBFILES	= $(foreach lib,$(LIB),$(lib:%=$(LIBDIR)/lib%)/$(lib:%=lib%.a))
+
+ifndef LIBTRG
+# General
+ifndef TRG
+$(call outdated,PRG,TRG)
+TRG	= $(PRG)
+endif
+endif
+
+#DEFS	+= -fpack-struct -fshort-enums
+#DEFS	+= -funsigned-bitfields -funsigned-char
+NEWLIBS	= $(LIBDIRS:%=-L%) $(LIB:%=-l%)
+INCS	+= $(LIBDIRS:%=-I%)
+INCS	+= $(INCDIRS:%=-I%)
+
+OBJS	= $(subst .S,.o,$(subst .c,.o,$(SRC:.cpp=.o)))
+DEPS	= $(OBJS:.o=.d)
+
+AR	= avr-ar
+AS	= avr-gcc
+CC	= avr-gcc
+CXX	= avr-g++
+LD	= avr-gcc
+OBJCOPY	= avr-objcopy
+OBJDUMP	= avr-objdump
+SIZE	= avr-size
+AVRDUDE	= avrdude
+
+FLAGS	?= -g -Wall -Werror
+ifdef OPTIMIZE
+ifndef LIBTRG
+$(call outdated,OPTIMIZE,OPTLEVEL)
+endif
+FLAGS	+= $(OPTIMIZE)
+else
+FLAGS	+= -O$(OPTLEVEL)
+endif
+FLAGS	+= -mmcu=$(MCU_TARGET)
+
+# Exports
+export DEFS MCU_TARGET OPTIMIZE OPTLEVEL
+# Not needed?
+#export MCU_FREQ
+
+ARFLAGS	= rcs
+# Override is only needed by avr-lib build system.
+override ASFLAGS	= $(DEFS) $(INCS) $(FLAGS)
+override CFLAGS		= $(DEFS) $(INCS) $(FLAGS)
+override CXXFLAGS	= $(DEFS) $(INCS) $(FLAGS)
+override LDFLAGS	= $(FLAGS) -Wl,-Map,$(TRG).map
+
+# Verbose display
+define verbose
+	@if [ 'x$(VERBOSE)' = x ]; then	\
+		echo "  "$1;		\
+	else				\
+		echo $2;		\
+	fi
+	@$2
+endef
+
+# Rules
+ifdef LIBTRG
+all: lib
+else
+all: elf lst text eeprom
+PHONYTRGS	+= elf lst map
+endif
+
+CLEAN_FILES	+= $(OBJS)
+$(TRG).elf: $(OBJS) $(LIBFILES)
+	$(call verbose,"LD\t$@",\
+	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(NEWLIBS) $(LIBS))
+	$(call verbose,"SIZE\t$@",\
+	$(SIZE) $@)
+
+%.o: %.c
+	$(call verbose,"CC\t$<",\
+	$(CC) $(CFLAGS) -c -o $@ $<)
+
+%.o: %.cpp
+	$(call verbose,"CXX\t$<",\
+	$(CXX) $(CXXFLAGS) -c -o $@ $<)
+
+%.o: %.S
+	$(call verbose,"AS\t$<",\
+	$(AS) $(ASFLAGS) -c -o $@ $<)
+
+%.lst: %.elf
+	$(call verbose,"GEN\t$@",\
+	$(OBJDUMP) -h -S $< > $@)
+
+ifdef LIBTRG
+# Rule for building library
+.PHONY: lib
+lib: lib-static
+
+.PHONY: lib-static
+lib-static: lib$(LIBTRG).a
+CLEAN_FILES	+= lib$(LIBTRG).a
+
+lib$(LIBTRG).a: $(OBJS)
+	$(call verbose,"AR\t$@",\
+	$(AR) $(ARFLAGS) $@ $(OBJS))
+endif
+
+# Libraries
+$(LIBFILES): %:
+	$(call verbose,"MAKE\t$@",\
+	$(MAKE) -C $(dir $@))
+
+# Dependency
+CLEAN_FILES	+= $(DEPS) $(DEPS:%=%.*)
+-include $(DEPS)
+
+%.d: %.c
+	@set -e; rm -f $@; \
+	$(CC) -MM $(CFLAGS) $< | \
+	sed 's,[^:]*\.o[ :]*,$(<:.c=.o) $@ : ,g' > $@;
+
+%.d: %.cpp
+	@set -e; rm -f $@; \
+	$(CXX) -MM $(CXXFLAGS) $< | \
+	sed 's,[^:]*\.o[ :]*,$(<:.cpp=.o) $@ : ,g' > $@;
+
+# Clean up
+ifndef LIBTRG
+CLEAN_DIRS	+= $(LIBDIRS:%=clean-%)
+endif
+.PHONY: $(CLEAN_DIRS)
+$(CLEAN_DIRS):
+	$(call verbose,"CLEAN\t$(@:clean-%=%)",\
+	$(MAKE) -C $(@:clean-%=%) clean)
+
+.PHONY: clean
+clean: $(CLEAN_DIRS)
+	$(call verbose,"CLEAN\t$(CLEAN_FILES)",\
+	$(RM) $(CLEAN_FILES))
+
+# Following are not needed when building libraries
+ifndef LIBTRG
+# Rules for building the .text rom images
+# Only hex is needed; Others: bin, srec
+.PHONY: text
+text: hex
+PHONYTRGS	+= hex bin srec
+
+%.hex: %.elf
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .text -j .data -O ihex $< $@)
+
+%.srec: %.elf
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .text -j .data -O srec $< $@)
+
+%.bin: %.elf
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .text -j .data -O binary $< $@)
+
+# Rules for building the .eeprom rom images
+# Only ehex is needed; Others: ebin, esrec
+.PHONY: eeprom
+eeprom:	ehex
+EEPFILE ?= $(TRG)_eeprom.hex
+
+EEPTRGS	+= ehex ebin esrec
+CLEAN_FILES	+= $(EEPTRGS:e%=$(TRG)_eeprom.%)
+.PHONY: $(EEPTRGS)
+$(EEPTRGS): e%: $(TRG)_eeprom.%
+
+%_eeprom.hex: %.elf
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex $< $@)
+
+%_eeprom.srec: %.elf
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O srec $< $@)
+
+%_eeprom.bin: %.elf
+	$(call verbose,"GEN\t$@",\
+	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O binary $< $@)
+
+# For program MCU with avrdude.
+AVROPS	= flash readflash eep readeep fuse flashall
+.PHONY: $(AVROPS) $(AVROPS:%=avr-%) knock
+
+$(AVROPS): %: avr-%
+	echo $(shell date '+%Y-%m-%d %H:%M:%S'), $(PRGER), $(MCU_TARGET), $@, $(PWD), $(TRG).hex >> $(LOG)
+
+avr-flash: hex
+	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U flash:w:$(TRG).hex
+
+avr-flashall: hex ehex
+	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U flash:w:$(TRG).hex -U eeprom:w:$(EEPFILE)
+
+avr-readflash:
+	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U flash:r:$(TRG).hex:i
+
+avr-eep: ehex
+	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U eeprom:w:$(EEPFILE)
+
+avr-readeep:
+	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U eeprom:r:$(EEPFILE):i
+
+avr-fuse:
+	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET) -U efuse:w:$(EFUSE):m -U hfuse:w:$(HFUSE):m -U lfuse:w:$(LFUSE):m
+
+knock:
+	$(AVRDUDE) -c $(PRGER) -p $(MCU_TARGET)
+endif
+
+# PHONY targets
+.PHONY: $(PHONYTRGS)
+$(PHONYTRGS): %: $(TRG).%
+CLEAN_FILES	+= $(PHONYTRGS:%=$(TRG).%)
