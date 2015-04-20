@@ -4,7 +4,7 @@ TRG	= inttest
 SRC	= inttest.c
 INCDIRS	= ../inc
 
-PRGER		= usbasp
+PRGER		= c232hm
 MCU_TARGET	= atmega162
 MCU_FREQ	= 8000000
 

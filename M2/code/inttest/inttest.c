@@ -4,7 +4,7 @@
 
 volatile unsigned char count = 1;
 
-ISR(PCINT0_vect)
+ISR(PCINT1_vect)
 {
 	Bit_SET(PORTB, 0);
 	count = 1 - count;
@@ -13,12 +13,13 @@ ISR(PCINT0_vect)
 
 int main(void)
 {
-	DDRA = 0x00;		// A is input, do you need a pullup
+	DDRC = 0x00;		// C is input, do you need a pullup
 	DDRB = 0xFF;		// rB is output
 	PORTB = 0x00;
-	PCMSK0 = 0x01;		// enable PORTA, bit 0 for bit change interrupt
+	PORTC = 0xFF;
+	PCMSK1 = 0x02;		// enable PORTC, bit 1 for bit change interrupt
 	//~ MCUCR = MCUCR | 0x04;
-	GICR = 0x08;		// Enable interupt 0
+	GICR = 0x10;		// Enable interupt 0
 	sei();
 	for (;;) {
 		Bit_SET(PORTB, 1);
