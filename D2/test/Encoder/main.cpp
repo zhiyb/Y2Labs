@@ -26,10 +26,14 @@ uint8_t encoder(uint8_t num)
 
 int main(void)
 {
-	puts("# Hamming encoder");
-	puts("CRS DDDD SO");
-	puts("C00 0000 00");
-	putchar('\n');
+	puts("# Hamming encoder\n"
+	"<PinDef>\n"
+	"# CRS DDDD SO\n"
+	"# Clock, nReset, Start, D3, D2, D1, D0, Strobe, DataOut\n"
+	"A15, A16, A17, A21, A20, A19, A18, Q15, Q16\n"
+	"</PinDef>\n\n"
+	"<TestVector>\n"
+	"C00 0000 00\n");
 
 	for (int n = 0; n < 0x10; n++) {
 		for (int i = 0; i < 8 + DELAY; i++) {
@@ -41,6 +45,7 @@ int main(void)
 		}
 		putchar('\n');
 	}
+	puts("</TestVector>");
 
 	return 0;
 }

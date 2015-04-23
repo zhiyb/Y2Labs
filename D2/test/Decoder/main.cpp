@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define DELAY	1
+#define DELAY	0
 
 #define DEC_ERRBIT	(1 << 7)
 #define DEC_ERROR(d)	(d & DEC_ERRBIT)
@@ -54,10 +54,14 @@ uint8_t decoder(uint8_t data)
 
 int main(void)
 {
-	puts("# Hamming decoder");
-	puts("CRSI DDDD RVE");
-	puts("C000 0000 000");
-	putchar('\n');
+	puts("# Hamming decoder\n"
+	"<PinDef>\n"
+	"# CRSI DDDD RVE\n"
+	"# Clock, nReset, Strobe, DataIn, D3, D2, D1, D0, Ready, Valid, Error\n"
+	"A15, A16, A22, A23, Q21, Q20, Q19, Q18, Q17, Q22, Q23\n"
+	"</PinDef>\n\n"
+	"<TestVector>\n"
+	"C000 0000 000\n");
 
 	int prev = -1, prevprev = -1;
 	for (int data = 0; data < 0x100 + 1; data++) {
@@ -67,12 +71,15 @@ int main(void)
 				prev = prevprev;
 			bool in = i < 8 ? (data >> i) % 2 : 0;
 			printf("C1%u%u ", i == 0, in);
-			printBinary(prev == -1 ? 0 : prev, 4);
+			if (DEC_VALID(prev))
+				printBinary(prev == -1 ? 0 : prev, 4);
+			else
+				printf("XXXX");
 			bool ready = 0, valid = 0, error = 0;
 			if (prev != -1) {
 				ready = i == DELAY;
 				valid = DEC_VALID(prev);
-				error = DEC_ERROR(prev);
+				error = ready ? DEC_ERROR(prev) : 0;
 			}
 			printf(" %u%u%u", ready, valid, error);
 			putchar('\n');
@@ -80,37 +87,7 @@ int main(void)
 		prevprev = dec;
 		putchar('\n');
 	}
+	puts("</TestVector>");
 
-#if 0
-	uint8_t data = 0, dec, hwDec;
-	do {
-		dec = decoder(data);
-		hwDec = hwDecoder(data);
-		if ((!DEC_VALID(hwDec) && !DEC_VALID(dec)) || \
-				(dec == hwDec))
-			tft.setForeground(conv::c32to16(0x0000FF00));
-		else if (!DEC_VALID(hwDec))
-			tft.setForeground(conv::c32to16(0x007F0000));
-		else if (DEC_TRANSERR(hwDec))
-			tft.setForeground(conv::c32to16(0x000000FF));
-		else
-			tft.setForeground(conv::c32to16(0x00FF0000));
-		printf("%02X", data);
-		tft.setForeground(0xFFFF);
-		if (DEC_VALID(hwDec) && DEC_TRANSERR(hwDec))
-			printf("%01X", hwDec & 0x0F);
-		else
-			putchar('/');
-		if (!DEC_VALID(dec))
-			tft.setForeground(conv::c32to16(0x00FF0000));
-		else if (DEC_ERR(dec))
-			tft.setForeground(conv::c32to16(0x000000FF));
-		else
-			tft.setForeground(conv::c32to16(0x0000FF00));
-		printf("%01X", dec & 0x0F);
-		data++;
-		putchar(data % 8 ? ' ' : '\n');
-	} while (data);
-#endif
 	return 0;
 }

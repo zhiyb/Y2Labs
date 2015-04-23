@@ -11,10 +11,14 @@ const uint8_t test = TEAMJ;
 
 int main(void)
 {
-	puts("# Sequencer test");
-	puts("CRD M");
-	puts("C00 0");
-	putchar('\n');
+	puts("# Sequencer\n"
+	"<PinDef>\n"
+	"# CRD M\n"
+	"# Clock, nReset, DataIn, MatchAll\n"
+	"A12, A13, A14, Q12\n"
+	"</PinDef>\n\n"
+	"<TestVector>\n"
+	"C00 0\n");
 
 	uint8_t buff = test, match = test;
 	for (uint8_t i = 0; i < 8; i++) {
@@ -59,6 +63,7 @@ int main(void)
 		putchar('\n');
 	}
 #endif
+	puts("</TestVector>");
 
 	return 0;
 }

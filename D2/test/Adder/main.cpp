@@ -14,8 +14,13 @@ void printBinary(uint32_t v, int len)
 
 int main(void)
 {
-	puts("# 4bit adder");
-	puts("I AAAA BBBB O QQQQ");
+	puts("# 4 bit adder\n"
+	"<PinDef>\n"
+	"# I AAAA BBBB O QQQQ\n"
+	"# CarryIn, A[3:0], B[3:0], CarryOut, Q[3:0]\n"
+	"A3, A7, A6, A5, A4, A11, A10, A9, A8, Q7, Q6, Q5, Q4, Q3\n"
+	"</PinDef>\n\n"
+	"<TestVector>");
 
 	for (uint8_t c = 0; c < 2; c++)
 		for (uint8_t a = 0; a < 16; a++)
@@ -32,6 +37,7 @@ int main(void)
 				printBinary(a + b + c, 4);
 				putchar('\n');
 			}
+	puts("</TestVector>");
 	
 	return 0;
 }

@@ -1,0 +1,5 @@
+vec:	$(TRG).vec
+CLEAN_FILES	+= $(TRG).vec
+
+$(TRG).vec:	$(TRG)
+	./$(TRG) > $@
