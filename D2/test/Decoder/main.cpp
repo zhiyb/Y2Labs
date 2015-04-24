@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#define PREV	1
 #define DELAY	0
 
 #define DEC_ERRBIT	(1 << 7)
@@ -68,7 +69,10 @@ int main(void)
 	for (int data = 0; data < 0x100 + 1; data++) {
 		uint8_t dec = decoder(data);
 		for (int i = 0; i < 8 + DELAY; i++) {
-			if (i == DELAY)
+			if (PREV) {
+				if (i == 8 - PREV && data < 0x100)
+					prev = dec;
+			} else if (i == DELAY)
 				prev = prevprev;
 			bool in = i < 8 ? (data >> i) % 2 : 0;
 			printf("C1%u%u ", i == 0 && data < 0x100, in);
@@ -78,7 +82,7 @@ int main(void)
 				printf("XXXX");
 			bool ready = 0, valid = 0, error = 0;
 			if (prev != -1) {
-				ready = i == DELAY;
+				ready = PREV ? (data < 0x100 ? i == 8 - PREV : 0) : i == DELAY;
 				valid = DEC_VALID(prev);
 				error = ready ? DEC_ERROR(prev) : 0;
 			}

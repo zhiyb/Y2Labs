@@ -1,0 +1,12 @@
+# Ring Oscillator
+<PinDef>
+# nReset, Enale, OscOut
+A1, A2, Q1
+</PinDef>
+
+<TestVector>
+01 0
+11 X
+10 0
+11 X
+</TestVector>
