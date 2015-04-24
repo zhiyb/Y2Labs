@@ -33,6 +33,7 @@ int main(void)
 	"A15, A16, A17, A21, A20, A19, A18, Q15, Q16\n"
 	"</PinDef>\n\n"
 	"<TestVector>\n"
+	"000 0000 00\n"
 	"C00 0000 00\n");
 
 	for (int n = 0; n < 0x10; n++) {
@@ -45,6 +46,8 @@ int main(void)
 		}
 		putchar('\n');
 	}
+	puts("C10 0000 0X");	// Idle state
+	puts("010 0000 0X");	// Idle state
 	puts("</TestVector>");
 
 	return 0;

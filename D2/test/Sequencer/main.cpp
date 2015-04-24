@@ -18,6 +18,7 @@ int main(void)
 	"A12, A13, A14, Q12\n"
 	"</PinDef>\n\n"
 	"<TestVector>\n"
+	"000 0\n"
 	"C00 0\n");
 
 	uint8_t buff = test, match = test;
@@ -63,6 +64,7 @@ int main(void)
 		putchar('\n');
 	}
 #endif
+	puts("000 0\n");	// Idle state
 	puts("</TestVector>");
 
 	return 0;

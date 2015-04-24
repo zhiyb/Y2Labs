@@ -61,6 +61,7 @@ int main(void)
 	"A15, A16, A22, A23, Q21, Q20, Q19, Q18, Q17, Q22, Q23\n"
 	"</PinDef>\n\n"
 	"<TestVector>\n"
+	"0000 0000 000\n"
 	"C000 0000 000\n");
 
 	int prev = -1, prevprev = -1;
@@ -70,7 +71,7 @@ int main(void)
 			if (i == DELAY)
 				prev = prevprev;
 			bool in = i < 8 ? (data >> i) % 2 : 0;
-			printf("C1%u%u ", i == 0, in);
+			printf("C1%u%u ", i == 0 && data < 0x100, in);
 			if (DEC_VALID(prev))
 				printBinary(prev == -1 ? 0 : prev, 4);
 			else
@@ -87,6 +88,8 @@ int main(void)
 		prevprev = dec;
 		putchar('\n');
 	}
+	puts("C100 XXXX 0X0");	// Idle state
+	puts("0100 XXXX 0X0");	// Idle state
 	puts("</TestVector>");
 
 	return 0;
