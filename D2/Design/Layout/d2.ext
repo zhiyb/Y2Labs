@@ -1,0 +1,189 @@
+# **********************************************************
+#                  File: ams_C35.ext
+#                   For: Extract definition file
+#                Vendor: austriamicrosystems 
+#            Technology: 0.35 um CMOS C35 
+#               Version: 1.0 
+#                  Date: 11/02/2003
+# Technology Setup and Test/Demo Suite: in file ams_C35_vN.tdb
+# Copyright (c) 2003
+# Fraunhofer IIS-A, Erlangen, Germany
+# Tanner Research, Inc.  All rights reserved
+#
+# **********************************************************
+
+connect(n well wire, ndiffusion, ndiffusion)
+connect(subs, pdiffusion, pdiffusion)
+connect(allsubs, subs, subs)
+connect(ndiffusion, MET1, DIFFCON)
+connect(pdiffusion, MET1, DIFFCON)
+connect(poly wire, MET1, POLY1CON)
+connect(poly2 wire, MET1, POLY2CON)
+connect(MET1, MET2, VIA)
+connect(MET2, MET3, VIA2)
+connect(MET3, MET4, VIA3)
+connect(LPNP emitter, pdiffusion, LPNP emitter)
+connect(LPNP collector, pdiffusion, LPNP collector)
+connect(VPNP emitter, pdiffusion, VPNP emitter)
+connect(VPNP collector, pdiffusion, VPNP collector)
+
+# NMOS transistor with PolySi gate
+# to extract only W and L change the following lines:
+device = MOSFET(
+            RLAYER=ntran;  
+            Drain=ndiffusion, WIDTH;
+            Gate=poly wire;   
+            Source=ndiffusion, WIDTH;
+            Bulk=subs;
+            MODEL=MODN;
+            )
+# to extract in v7.x AD, PD, AS, PS activate the following lines:
+#device = MOSFET(
+#            RLAYER=ntran;  
+#            Drain=ndiffusion, AREA, PERIMETER;
+#            Gate=poly wire;   
+#            Source=ndiffusion, AREA, PERIMETER;
+#            Bulk=subs;
+#            MODEL=MODN;
+#            )
+
+# PMOS transistor with PolySi gate
+# to extract only W and L change the following lines:
+device = MOSFET(
+            RLAYER=ptran;
+            Drain=pdiffusion, WIDTH;
+            Gate=poly wire;
+            Source=pdiffusion, WIDTH;
+            Bulk=n well wire;
+            MODEL=MODP;
+            )
+# to extract in v7.x AD, PD, AS, PS activate the following lines:
+#device = MOSFET(
+#            RLAYER=ptran;
+#            Drain=pdiffusion, AREA, PERIMETER;
+#            Gate=poly wire;
+#            Source=pdiffusion, AREA, PERIMETER;
+#            Bulk=n well wire;
+#            MODEL=MODP;
+#            )
+
+# Lateral PNP transistor
+#device = BJT(
+#            RLAYER=LPNP ID;
+#            Collector=LPNP collector;
+#            Base=n well wire;
+#            Emitter=LPNP emitter;
+#            Substrate=allsubs;
+#            MODEL=LPNP;
+#            )
+
+# Vertical PNP transistor
+#device = BJT(
+#            RLAYER=VPNP ID;
+#            Collector=VPNP collector;
+#            Base=n well wire;
+#            Emitter=VPNP emitter;
+#            Substrate=allsubs;
+#            MODEL=VPNP;
+#            )
+
+# NPN transistor
+#device = BJT(
+#            RLAYER=npn dev;
+#            Collector=n well wire;
+#            Base=npn dev ;
+#            Emitter=ndiffusion;
+#            Substrate=allsubs;
+#            MODEL=NPN;
+#            )
+
+# poly1-poly2 capacitor
+device = CAP(
+		RLAYER=poly capacitor;
+		Plus=poly wire;
+		Minus=poly2 wire;
+		MODEL=;
+		)
+
+# Bonding Area Capacitance
+#device = CAP(
+#		RLAYER=Pad Comment;
+#		Plus=MET1;
+#		Minus=allsubs;
+#		MODEL=;
+#		)
+
+# Poly2 resistor
+device = RES(
+	     RLAYER=poly2 resistor;
+	     Plus=poly2 wire, WIDTH;
+	     Minus=poly2 wire, WIDTH;
+	     MODEL=RPOLY2;
+	     )
+
+# RPOLYH resistor
+device = RES(
+            RLAYER=rpolyh resistor;
+            Plus=poly2 wire, width;
+            Minus=poly2 wire, width;
+            MODEL=RPOLYH;
+            )
+
+# N Well resistor
+device = RES(
+            RLAYER=nwell resistor;
+            Plus=n well wire, WIDTH;
+            Minus=n well wire, WIDTH;
+            MODEL=RNWELL;
+            )
+
+# N Diffusion resistor
+#device = RES(
+#            RLAYER=ndiff resistor;
+#            Plus=ndiffusion, WIDTH;
+#            Minus=ndiffusion, WIDTH;
+#            MODEL=;
+#            )
+
+# P Diffusion resistor
+device = RES(
+	     RLAYER=pdiff resistor;
+	     Plus=pdiffusion, WIDTH;
+	     Minus=pdiffusion, WIDTH;
+	     MODEL=RDIFFP3;
+	     )
+
+# Diodes
+# WELLDIODE
+#device = DIODE(
+#		RLAYER=pdiff diode;
+#		Plus=pdiffusion, WIDTH;
+#		Minus=n well wire, WIDTH;
+#		MODEL=PD;
+#		)IGNORE_SHORTS
+# SUBDIODE
+#device = DIODE(
+#		RLAYER=ndiff diode;
+#		Plus=subs, WIDTH;
+#		Minus=ndiffusion, WIDTH;
+#		MODEL=ND;
+#		)IGNORE_SHORTS
+
+# NWDIODE
+#device = DIODE(
+#		RLAYER=nwdiode;
+#		Plus=subs, WIDTH;
+#		Minus=n well wire, WIDTH;
+#		MODEL=NWD;
+#		)IGNORE_SHORTS
+
+
+# Lateral Diode / D_lateral
+#device = DIODE(
+#		RLAYER=lateral diode;
+#		Plus=pdiffusion, WIDTH;
+#		Minus=ndiffusion, WIDTH;
+#		MODEL=LD;
+#		)IGNORE_SHORTS
+
+# **********************************************************
