@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <util/delay.h>
 #include "tft.h"
-#include "conv.h"
+#include "rgbconv.h"
 
 #define DEC_CLK		_BV(7)	// P1.7
 #define DEC_DSTROBE	_BV(5)	// P4.3
@@ -21,6 +21,8 @@
 #define DEC_VALID(d)	(d != 0xFF)
 #define DEC_TRANSERRBIT	_BV(6)
 #define DEC_TRANSERR(d)	(d & DEC_TRANSERRBIT)
+
+tft_t tft;
 
 uint8_t hwDecoder(uint8_t data)
 {
@@ -97,12 +99,12 @@ void init(void)
 	PORTB = 0;
 
 	tft.init();
-	tft /= tft.Portrait;
+	tft.setOrient(tft.Portrait);
 	tft.setBackground(0x0000);
 	tft.setForeground(0x667F);
 	tft.clean();
-	stdout = tftout();
-	tft++;
+	stdout = tftout(&tft);
+	tft.setBGLight(true);
 }
 
 int main(void)
@@ -111,9 +113,9 @@ int main(void)
 
 start:
 	tft.clean();
-	tft *= 2;
+	tft.setZoom(2);
 	puts("Hamming decoder");
-	tft *= 1;
+	tft.setZoom(1);
 	uint8_t data = 0, dec, hwDec;
 	do {
 		dec = decoder(data);

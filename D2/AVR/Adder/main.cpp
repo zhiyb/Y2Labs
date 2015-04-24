@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <util/delay.h>
 #include "tft.h"
-#include "conv.h"
+#include "rgbconv.h"
 
 // PORTD
 #define ADD_X0		_BV(0)	// P1.0
@@ -22,6 +22,8 @@
 #define ADD_CIN		_BV(0)	// P1.4
 #define ADD_COUT	_BV(1)	// P4.0
 
+tft_t tft;
+
 using namespace conv;
 
 void check(uint8_t data)
@@ -38,12 +40,12 @@ void init(void)
 	DDRB |= 0x80;			// LED
 	PORTB |= 0x80;
 	tft.init();
-	tft /= tft.Portrait;
+	tft.setOrient(tft.Portrait);
 	tft.setBackground(0x0000);
 	tft.setForeground(0x667F);
 	tft.clean();
-	stdout = tftout();
-	tft++;
+	stdout = tftout(&tft);
+	tft.setBGLight(true);
 
 	PORTD = 0x00;
 	DDRD = 0xFF;
@@ -57,9 +59,9 @@ int main(void)
 
 start:
 	tft.clean();
-	tft *= 2;
+	tft.setZoom(2);
 	puts("4bit adder");
-	tft *= 1;
+	tft.setZoom(1);
 
 	for (uint8_t c = 0; c < 2; c++) {
 		tft.setForeground(c32to16(0x00FFFFFF));

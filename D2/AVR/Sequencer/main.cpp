@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <util/delay.h>
 #include "tft.h"
-#include "conv.h"
+#include "rgbconv.h"
 
 #define SEQ_CLK	_BV(7)	// P1.7
 #define	SEQ_D	_BV(4)	// P1.4
@@ -19,6 +19,7 @@
 #define TEAMM	0b11110001
 #define TEAMN	0b11110101
 
+tft_t tft;
 const uint8_t test = TEAMJ;
 
 using namespace conv;
@@ -42,12 +43,12 @@ void init(void)
 	PORTB = SEQ_M;
 
 	tft.init();
-	tft /= tft.Portrait;
+	tft.setOrient(tft.Portrait);
 	tft.setBackground(0x0000);
 	tft.setForeground(0x667F);
 	tft.clean();
-	stdout = tftout();
-	tft++;
+	stdout = tftout(&tft);
+	tft.setBGLight(true);
 }
 
 int main(void)
@@ -56,7 +57,7 @@ int main(void)
 
 start:
 	tft.clean();
-	tft *= 2;
+	tft.setZoom(2);
 	puts("Sequencer test");
 
 	uint8_t buff = test, match = test;

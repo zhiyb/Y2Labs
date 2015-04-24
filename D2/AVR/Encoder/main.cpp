@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <util/delay.h>
 #include "tft.h"
-#include "conv.h"
+#include "rgbconv.h"
 
 #define ENC_CLK		_BV(7)
 #define	ENC_ESTART	_BV(4)
@@ -13,17 +13,19 @@
 #define ENC_ESTROBE	_BV(5)
 #define ENC_EDATA	_BV(6)
 
+tft_t tft;
+
 void init(void)
 {
 	DDRB |= 0x80;			// LED
 	PORTB |= 0x80;
 	tft.init();
-	tft /= tft.Portrait;
+	tft.setOrient(tft.Portrait);
 	tft.setBackground(0x0000);
 	tft.setForeground(0x667F);
 	tft.clean();
-	stdout = tftout();
-	tft++;
+	stdout = tftout(&tft);
+	tft.setBGLight(true);
 
 	PORTD = ENC_ESTROBE | ENC_EDATA;
 	DDRD = ~(ENC_ESTROBE | ENC_EDATA);
@@ -37,7 +39,7 @@ int main(void)
 
 start:
 	tft.clean();
-	tft *= 2;
+	tft.setZoom(2);
 	puts("Hamming encoder");
 
 	for (uint8_t  num = 0; num < 16; num++) {
@@ -51,9 +53,9 @@ start:
 			PIND |= ENC_CLK;
 			if (i == 0 && !(PIND & ENC_ESTROBE)) {
 				tft.setForeground(0x007F);
-				tft *= 1;
+				tft.setZoom(1);
 				putchar('.');
-				tft *= 2;
+				tft.setZoom(2);
 				continue;
 			}
 			data >>= 1;
