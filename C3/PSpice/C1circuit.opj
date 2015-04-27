@@ -8,7 +8,8 @@
       (Type "Schematic Design"))
     (BuildFileAddedOrDeleted "x")
     (CompileFileAddedOrDeleted "x")
-    (PSPICE_Regenerate_Netlist_Flag ".\false"))
+    (PSPICE_Regenerate_Netlist_Flag "FALSE")
+    (RootChangedForceReNetlist "x"))
   (Folder "Outputs")
   (Folder "PSpice Resources"
     (Folder "Simulation Profiles")
@@ -20,8 +21,35 @@
       (Sort User)))
   (DefaultLibraryBrowseDirectory "library\PSpice")
   (PartMRUSelector
+    (VAC
+      (FullPartName "VAC.Normal")
+      (LibraryName
+         "C:\CADENCE\PSD_14.2\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (0
+      (LibraryName "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
     (GND
-      (LibraryName "C:\CADENCE\PSD_14.2\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (LibraryName "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (VDC
+      (FullPartName "VDC.Normal")
+      (LibraryName
+         "C:\CADENCE\PSD_14.2\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (LM741
+      (FullPartName "LM741.Normal")
+      (LibraryName "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\PSPICE\OPAMP.OLB")
+      (DeviceIndex "0"))
+    (VSIN
+      (FullPartName "VSIN.Normal")
+      (LibraryName
+         "C:\CADENCE\PSD_14.2\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (C
+      (FullPartName "C.Normal")
+      (LibraryName
+         "C:\CADENCE\PSD_14.2\TOOLS\CAPTURE\LIBRARY\PSPICE\ANALOG.OLB")
       (DeviceIndex "0"))
     (R
       (FullPartName "R.Normal")
@@ -42,56 +70,36 @@
       (FullPartName "ABM2.Normal")
       (LibraryName "C:\PROGRAM FILES\ORCAD_DEMO\CAPTURE\LIBRARY\PSPICE\ABM.OLB")
       (DeviceIndex "0"))
-    (C
-      (FullPartName "C.Normal")
-      (LibraryName
-         "C:\CADENCE\PSD_14.2\TOOLS\CAPTURE\LIBRARY\PSPICE\ANALOG.OLB")
-      (DeviceIndex "0"))
-    (VDC
-      (FullPartName "VDC.Normal")
-      (LibraryName
-         "C:\CADENCE\PSD_14.2\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
-      (DeviceIndex "0"))
-    (VAC
-      (FullPartName "VAC.Normal")
-      (LibraryName
-         "C:\CADENCE\PSD_14.2\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
-      (DeviceIndex "0"))
-    (VSIN
-      (FullPartName "VSIN.Normal")
-      (LibraryName
-         "C:\CADENCE\PSD_14.2\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
-      (DeviceIndex "0"))
-    (0
-      (LibraryName
-         "C:\CADENCE\PSD_14.2\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
-      (DeviceIndex "0"))
     (Q2N3904
       (FullPartName "Q2N3904.Normal")
       (LibraryName
          "C:\CADENCE\PSD_14.2\TOOLS\CAPTURE\LIBRARY\PSPICE\BIPOLAR.OLB")
       (DeviceIndex "0")))
   (LastUsedLibraryBrowseDirectory
-     "C:\Cadence\PSD_14.2\tools\capture\library\pspice")
+     "C:\Cadence\SPB_16.6\tools\capture\library\pspice")
   (GlobalState
     (FileView
       (Path "Design Resources")
-      (Select "Design Resources"))
+      (Path "Design Resources" "H:\Labs\C3\PSpice\c1circuit.dsn")
+      (Path "Design Resources" "H:\Labs\C3\PSpice\c1circuit.dsn" "FILTER")
+      (Path "Design Resources" "H:\Labs\C3\PSpice\c1circuit.dsn" "SCHEMATIC1")
+      (Path "Design Resources" "H:\Labs\C3\PSpice\c1circuit.dsn" "Design Cache")
+      (Path "PSpice Resources")
+      (Select "Design Resources" "H:\Labs\C3\PSpice\c1circuit.dsn" "FILTER"))
     (HierarchyView)
     (Doc
       (Type "COrCapturePMDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -4 -23 0 200 0 419"))
-      (Tab 1))
+        (Placement "44 2 3 -1 -1 -4 -23 0 391 0 550"))
+      (Tab 0))
     (Doc
       (Type "COrSchematicDoc")
       (Frame
-        (Placement "44 0 1 -1 -1 -1 -1 182 1172 147 731")
-        (Scroll "157 30")
-        (Zoom "100")
+        (Placement "44 0 1 -1 -1 -4 -23 78 1474 78 508")
+        (Scroll "14 441")
+        (Zoom "200")
         (Occurrence "/"))
-      (Path
-         "L:\DOCUMENTS AND SETTINGS\JNR\MY DOCUMENTS\ANALOGUE\LABS\C1_SIM\C1CIRCUIT.DSN")
-      (Schematic "SCHEMATIC1")
+      (Path "H:\LABS\C3\PSPICE\C1CIRCUIT.DSN")
+      (Schematic "FILTER")
       (Page "PAGE1")))
-  (MPSSessionName "jnr"))
+  (MPSSessionName "yz39g13"))
