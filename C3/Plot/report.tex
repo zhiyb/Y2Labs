@@ -1,0 +1,65 @@
+\input{reporthead.tex}
+
+\newcommand{\plot}{
+	\resizebox{0.95\columnwidth}{!}{%
+	\begin{tikzpicture}
+		\begin{semilogxaxis}[
+			xlabel={Frequency (Hz)},
+			x tick label style={
+				/pgf/number format/.cd,
+				fixed, precision=2,
+				/tikz/.cd
+			},
+			%x dir=reverse,
+			ylabel={Gain (dB)},
+			y tick label style={
+				/pgf/number format/.cd,
+				fixed, precision=2,
+				/tikz/.cd
+			},
+			ylabel near ticks, yticklabel pos=left,
+			axis y line*=left,
+			%grid=major,
+		]
+		\addplot+[mark size=1pt,mark options=blue,blue] table[x=f,y=GdB] {bode.dat}
+		node [pos=0.1,anchor=south west,text=black] {Gain};
+		%\addlegendentry{Current}
+		%\label{plt:current#1}
+		\end{semilogxaxis}%
+		\begin{semilogxaxis}[
+			%x dir=reverse,
+			ylabel={Phase (degree)},
+			y tick label style={
+				/pgf/number format/.cd,
+				fixed, precision=2,
+				/tikz/.cd
+			},
+			ylabel near ticks, yticklabel pos=right,
+			axis y line*=right,
+			axis x line=none,
+			%grid=major,
+			%legend style={at={(0,0)},anchor=south west}]
+		]
+		%\addlegendimage{/pgfplots/refstyle=plt:current#1}\addlegendentry{Current}
+		\addplot+[mark=square*,mark size=1pt,mark options={solid,red},dashed,red] table[x=f,y=P] {bode.dat}
+		node [pos=0.1,anchor=north east,text=black] {Phase};
+		%\addlegendentry{Power}
+		\end{semilogxaxis}%
+	\end{tikzpicture}%
+	}%
+}
+
+% ****************************************** BEGIN ******************************************
+\begin{document}
+
+\begin{Figure}
+	\plot
+	%\caption{Frequency response of 4th order Rausch filter}
+\end{Figure}
+
+\begin{Figure}
+	\plot
+	%\caption{Frequency response of 4th order Rausch filter}
+\end{Figure}
+
+\end{document}
