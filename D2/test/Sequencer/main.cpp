@@ -9,10 +9,40 @@
 
 const uint8_t test = TEAMJ;
 
+void printBinary(uint32_t v, int len)
+{
+	char str[32];
+	str[len] = '\0';
+	while (len--) {
+		str[len] = v % 2 ? '1' : '0';
+		v >>= 1;
+	}
+	printf(str);
+}
+
+bool match(bool in)
+{
+	static uint8_t match = 0;
+	match <<= 1;
+	match |= in ? 1 : 0;
+	return match == test;
+}
+
+void check(uint8_t data, uint8_t bits)
+{
+	for (uint8_t i = 0; i < bits; i++) {
+		bool in = data & 0x80;
+		data <<= 1;
+		printf("C1%u", in);
+		printf(" %u\n", match(in));
+	}
+}
+
 int main(void)
 {
-	puts("# Sequencer\n"
-	"<PinDef>\n"
+	printf("# Sequencer: ");
+	printBinary(test, 8);
+	puts("\n<PinDef>\n"
 	"# CRD M\n"
 	"# Clock, nReset, DataIn, MatchAll\n"
 	"A12, A13, A14, Q12\n"
@@ -21,46 +51,16 @@ int main(void)
 	"000 0\n"
 	"C00 0\n");
 
-	uint8_t buff = test, match = test;
-	for (uint8_t i = 0; i < 8; i++) {
-		printf("C1");
-		putchar((buff & 0x80) ? '1' : '0');
-		printf(" %u\n", i == 7 ? 1 : 0);
-		buff <<= 1;
-	}
+	check(test, 8);
 	putchar('\n');
 	for (uint8_t i = 1; i <= 8; i++) {
-		buff = test;
-		for (uint8_t j = 0; j < i; j++) {
-			match <<= 1;
-			match |= (buff & 0x80) ? 1 : 0;
-			printf("C1");
-			putchar((buff & 0x80) ? '1' : '0');
-			printf(" %u\n", match == test ? 1 : 0);
-			buff <<= 1;
-		}
-		buff = test;
-		for (uint8_t j = 0; j < 8; j++) {
-			match <<= 1;
-			match |= (buff & 0x80) ? 1 : 0;
-			printf("C1");
-			putchar((buff & 0x80) ? '1' : '0');
-			printf(" %u\n", match == test ? 1 : 0);
-			buff <<= 1;
-		}
+		check(test, i);
+		check(test, 8);
 		putchar('\n');
 	}
 #ifdef TEST_ALL
 	for (int i = 0; i < 256; i++) {
-		buff = i;
-		for (uint8_t j = 0; j < 8; j++) {
-			match <<= 1;
-			match |= (buff & 0x80) ? 1 : 0;
-			printf("C1");
-			putchar((buff & 0x80) ? '1' : '0');
-			printf(" %u\n", match == test ? 1 : 0);
-			buff <<= 1;
-		}
+		check(i, 8);
 		putchar('\n');
 	}
 #endif
