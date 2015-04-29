@@ -1,0 +1,145 @@
+\documentclass[UTF8,a4paper,notitlepage,10pt]{report}
+\usepackage[left=2cm,right=2cm,top=2.5cm,bottom=2.5cm,footskip=1.25cm]{geometry}
+\usepackage[dvipdfmx]{graphicx,xcolor}
+\usepackage{pgfplots,pgfplotstable}
+\usepackage{enumitem,mathptmx,scrpage2,microtype,multicol,bmpsize,float,color,gensymb,siunitx,amsmath,environ,fp} %,subcaption,siunitx,capt-of,pgfplots
+%\usepackage{CJKutf8}
+\usepackage[belowskip=0pt,aboveskip=0pt]{caption}
+\usepackage[hyphens]{url}
+%\usepackage[none]{hyphenat}
+%\usepackage{natbib}
+\DeclareGraphicsExtensions{.png,.jpg}
+
+\newcounter{sections}
+\newcounter{subsections}[sections]
+\newcounter{appendix}
+\renewcommand{\theappendix}{\Alph{appendix}}
+
+% Formats
+
+\newcommand{\fontTitle}{\fontsize{28pt}{30.8pt}\selectfont}
+\newcommand{\fontHeading}{\fontsize{12pt}{13.2pt}\selectfont}
+\newcommand{\fontSubHeading}{\fontsize{10pt}{11pt}\selectfont}
+\newcommand{\fontName}{\fontsize{11pt}{12.1pt}\selectfont}
+\newcommand{\fontBody}{\fontsize{10pt}{11pt}\selectfont}
+\newcommand{\fontRef}{\fontsize{9pt}{9.9pt}\selectfont}
+
+\NewEnviron{Head}{%
+	\begin{center}
+	\BODY
+	\addvspace{25pt}\fontBody\end{center}
+}
+\NewEnviron{Abstract}{%
+	\fontBody
+	\begin{enumerate}[label={Abstract:},align=left,leftmargin=2cm,labelwidth=!,topsep=0pt,partopsep=0pt,parsep=0pt,itemsep=0pt]
+	\item\BODY
+	\par\end{enumerate}
+	\par\addvspace{25pt}
+}
+\newenvironment{Content}
+	{\columnsep=0.7cm
+	%\raggedcolumns
+	\begin{multicols}{2}
+	\pgfplotsset{width=\columnwidth}}
+	{\par\end{multicols}}
+\newenvironment{Reference}
+	{\par\addvspace{10pt}\fontHeading
+	\textbf{References}
+	\par\addvspace{10pt}\fontRef
+	\begin{enumerate}[label={[\arabic*]},align=left,leftmargin=0.7cm,labelwidth=!,
+				topsep=0pt,partopsep=0pt,parsep=0pt,itemsep=0pt]}
+	{\end{enumerate}}
+
+\newcommand{\Par}{\par\addvspace{6pt}}
+\newcommand{\Title}[1]{
+	\fontTitle
+	#1
+	\par\addvspace{25pt}
+	\fontBody
+}
+\newcommand{\Author}[1]{
+	\fontName
+	#1
+	\par
+	\fontBody
+}
+\newcommand{\Info}[1]{
+	\fontBody
+	\textit{#1}
+	\par
+}
+\newcommand{\Heading}[1]{
+	\addvspace{10pt}
+	\fontHeading
+	\stepcounter{sections}
+	\textbf{\hbox to 0.75cm{\thesections.}#1}
+	\par\addvspace{10pt}
+	\fontBody
+}
+\newcommand{\SubHeading}[1]{
+	\addvspace{6pt}
+	\fontSubHeading
+	\stepcounter{subsections}
+	\textbf{\hbox to 0.75cm{\thesections.\thesubsections}#1}
+	\par\addvspace{6pt}
+	\fontBody
+}
+\newcommand{\Appendix}[2]{
+	\addvspace{10pt}
+	\fontHeading
+	{\refstepcounter{appendix}\label{#1}}
+	\textbf{Appendix \theappendix: #2}
+	\par\addvspace{10pt}
+	\fontBody
+}
+
+% Elements
+
+\NewEnviron{Figure}{%
+	\vspace{10pt}\begin{figure}[H]\centering
+	\BODY
+	\end{figure}\par\addvspace{10pt}
+}
+\NewEnviron{Equation}{%
+	\vspace{6pt}\begin{equation}
+	\BODY
+	\end{equation}\par\addvspace{6pt}
+}
+\NewEnviron{Gather}{%
+	\vspace{6pt}\begin{gather}
+	\BODY
+	\end{gather}\par\addvspace{6pt}
+}
+\newcommand{\REFOnline}[2]{
+	% Author, Title, URL
+	#1 "#2" [\textit{Online}]. Available:
+}
+%\pgfplotsset{grid style={dashed,gray}}
+%\pgfplotsset{minor grid style={dashed,red}}
+%\pgfplotsset{major grid style={dotted,green!50!black}}
+
+% Format settings
+\ifoot[]{}
+\cfoot[]{}
+\ofoot[\pagemark]{\pagemark}
+\pagestyle{scrplain}
+\pagenumbering{arabic}
+\linespread{1.05}
+\righthyphenmin=62
+\parindent=0pt\parskip=0pt
+\setlength{\intextsep}{0pt}
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\abovedisplayshortskip}{0pt}
+\setlength{\belowdisplayshortskip}{0pt}
+\expandafter\def\expandafter\normalsize\expandafter{%
+	\normalsize
+	\setlength\abovedisplayskip{0pt}
+	\setlength\belowdisplayskip{0pt}
+	\setlength\abovedisplayshortskip{0pt}
+	\setlength\belowdisplayshortskip{0pt}
+}
+\captionsetup[figure]{belowskip=0pt,aboveskip=5pt}
+\captionsetup[table]{belowskip=0pt,aboveskip=6pt}
+\renewcommand\UrlFont{\rmfamily}
+%\bibliographystyle{plain}
