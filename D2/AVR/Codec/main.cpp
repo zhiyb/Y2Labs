@@ -95,8 +95,8 @@ uint8_t decoder_t::recv(void)
 
 void decoder_t::check(const uint8_t data, const uint8_t dec)
 {
-	errCount += dec == DATA_INVALID;
-	bool error = dec == DATA_INVALID || dec != data;
+	bool error = dec == DATA_INVALID || (dec & ~DATA_ERROR) != data;
+	errCount += error;
 	errRate = (errRate * (AVERAGE - 1) + error) / AVERAGE;
 }
 
