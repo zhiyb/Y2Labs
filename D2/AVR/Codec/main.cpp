@@ -31,6 +31,7 @@
 #define DATA_INVALID	0x7F
 #define DATA_ERROR	_BV(6)
 #define AVERAGE		200
+#define RATE		0.01
 
 using namespace colours::b16;
 
@@ -39,21 +40,22 @@ tft_t tft;
 class decoder_t
 {
 public:
-	decoder_t(void) : errCount(0), correct(0), errRate(0) {}
+	decoder_t(void) : errCount(0), cnt(0), correct(0), errRate(0) {}
 	void check(const uint8_t data, const uint8_t dec);
-	static uint8_t recv(void);
-	uint8_t errors(void) const {return errCount;}
-	double errorRate(void) const {return errRate;}
+	uint8_t recv(void);
+	uint16_t errors(void) const {return errCount;}
+	uint16_t count(void) const {return cnt;}
+	double errorRate(void) const {return (double)errCount / cnt;}
 
 private:
-	uint8_t errCount;
+	uint16_t errCount, cnt;
 	uint16_t correct;
 	double errRate;
 } decoder;
 
 void noise(float rate)
 {
-	if ((rand() & 0xFF) < (rate * 0xFF))
+	if ((rand() & 0xFFFF) < (rate * 0xFFFF))
 		PORTB |= COM_DATA;
 	else
 		PORTB &= ~COM_DATA;
@@ -79,9 +81,10 @@ bool enc_pool(uint8_t data)
 
 uint8_t decoder_t::recv(void)
 {
-	register uint8_t status = PINB;
+	uint8_t status = PINB;
 	if (!(status & DEC_READY))
 		return DATA_WAITING;
+	cnt++;
 	if (!(status & DEC_VALID))
 		return DATA_INVALID;
 	uint8_t data = DEC_DATA;
@@ -92,6 +95,7 @@ uint8_t decoder_t::recv(void)
 
 void decoder_t::check(const uint8_t data, const uint8_t dec)
 {
+	errCount += dec == DATA_INVALID;
 	bool error = dec == DATA_INVALID || dec != data;
 	errRate = (errRate * (AVERAGE - 1) + error) / AVERAGE;
 }
@@ -129,10 +133,10 @@ int main(void)
 	tft.setZoom(2);
 	bool newData = true;
 loop:
-	while (PINA & _BV(7));
+	//while (PINA & _BV(7));
 	uint8_t data = 0;
 	while (data < 0x10) {
-		noise(0.01);
+		noise(RATE);
 		newData = enc_pool(newData ? data : DATA_WAITING);
 		data += newData;
 		uint8_t dec = decoder.recv();
@@ -140,7 +144,23 @@ loop:
 			continue;
 		decoder.check((data - 1) & 0x0F, dec);
 	}
-	printf("ERR RATE: %6.2f\n", decoder.errorRate() * 100.0);
+	tft.setY(0);
+	tft.setForeground(Red);
+	puts("Bit error rate:");
+	tft.setForeground(Green);
+	printf("%6.2f%%\n", RATE * 100.0);
+	tft.setForeground(Red);
+	puts("Data error rate:");
+	tft.setForeground(Green);
+	printf("%6.2f%%\n", decoder.errorRate() * 100.0);
+	tft.setForeground(Red);
+	puts("Data count:");
+	tft.setForeground(Green);
+	printf("%u\n", decoder.count());
+	tft.setForeground(Red);
+	puts("Data error count:");
+	tft.setForeground(Green);
+	printf("%u\n", decoder.errors());
 	goto loop;
 
 	return 1;
