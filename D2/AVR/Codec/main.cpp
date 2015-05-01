@@ -30,10 +30,34 @@
 #define DATA_WAITING	0xFF
 #define DATA_INVALID	0x7F
 #define DATA_ERROR	_BV(6)
+#define AVERAGE		200
 
 using namespace colours::b16;
 
 tft_t tft;
+
+class decoder_t
+{
+public:
+	decoder_t(void) : errCount(0), correct(0), errRate(0) {}
+	void check(const uint8_t data, const uint8_t dec);
+	static uint8_t recv(void);
+	uint8_t errors(void) const {return errCount;}
+	double errorRate(void) const {return errRate;}
+
+private:
+	uint8_t errCount;
+	uint16_t correct;
+	double errRate;
+} decoder;
+
+void noise(float rate)
+{
+	if ((rand() & 0xFF) > (rate * 0xFF))
+		PORTB |= COM_DATA;
+	else
+		PORTB &= ~COM_DATA;
+}
 
 bool enc_pool(uint8_t data)
 {
@@ -53,7 +77,7 @@ bool enc_pool(uint8_t data)
 	return false;
 }
 
-uint8_t dec_recv(void)
+uint8_t decoder_t::recv(void)
 {
 	register uint8_t status = PINB;
 	if (!(status & DEC_READY))
@@ -64,6 +88,12 @@ uint8_t dec_recv(void)
 	if (status & DEC_ERROR)
 		data |= DATA_ERROR;
 	return data;
+}
+
+void decoder_t::check(const uint8_t data, const uint8_t dec)
+{
+	bool error = dec == DATA_INVALID || dec != data;
+	errRate = (errRate * (AVERAGE - 1) + error) / AVERAGE;
 }
 
 void init(void)
@@ -99,26 +129,18 @@ int main(void)
 	tft.setZoom(2);
 	bool newData = true;
 loop:
+	while (PINA & _BV(7));
 	uint8_t data = 0;
 	while (data < 0x10) {
-		while (PINA & _BV(7));
-		if (newData) {
-			tft.setForeground(Blue);
-			printf("%01X", data);
-		}
+		noise(0.01);
 		newData = enc_pool(newData ? data : DATA_WAITING);
 		data += newData;
-		uint8_t dec = dec_recv();
+		uint8_t dec = decoder.recv();
 		if (dec == DATA_WAITING)
 			continue;
-		if (dec == DATA_INVALID) {
-			tft.setForeground(Red);
-			putchar('X');
-			continue;
-		}
-		tft.setForeground(dec & DATA_ERROR ? Yellow : Green);
-		printf("%01X", dec & 0x0F);
+		decoder.check((data - 1) & 0x0F, dec);
 	}
+	printf("ERR RATE: %6.2f\n", decoder.errorRate() * 100.0);
 	goto loop;
 
 	return 1;
