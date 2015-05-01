@@ -53,7 +53,7 @@ private:
 
 void noise(float rate)
 {
-	if ((rand() & 0xFF) > (rate * 0xFF))
+	if ((rand() & 0xFF) < (rate * 0xFF))
 		PORTB |= COM_DATA;
 	else
 		PORTB &= ~COM_DATA;
@@ -61,6 +61,8 @@ void noise(float rate)
 
 bool enc_pool(uint8_t data)
 {
+	PORTB |= COM_CLK;
+	PORTB &= ~COM_CLK;
 	static uint8_t cnt = 0;
 	if (data == DATA_WAITING)
 		PORTB &= ~ENC_START;
@@ -69,8 +71,6 @@ bool enc_pool(uint8_t data)
 		PORTB |= ENC_START;
 		cnt = 8 - 1;
 	}
-	PORTB |= COM_CLK;
-	PORTB &= ~COM_CLK;
 	if (cnt == 0)
 		return true;
 	cnt--;
