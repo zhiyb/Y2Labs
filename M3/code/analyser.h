@@ -11,7 +11,7 @@ class Analyser
 public:
 	virtual ~Analyser(void) {}
 	virtual void init(void) {}
-	virtual void analyse(trace_t *trace) {}
+	virtual void analyse(const trace_t *trace) {}
 	virtual void report(void) {}
 };
 

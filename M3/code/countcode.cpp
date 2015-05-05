@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void CountCode::analyse(trace_t *trace)
+void CountCode::analyse(const trace_t *trace)
 {
 	countthings(&frequency, trace->at(13));
 }

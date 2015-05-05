@@ -7,7 +7,7 @@
 class CountCode : public Analyser
 {
 public:
-	void analyse(trace_t *trace);
+	void analyse(const trace_t *trace);
 	void report(void);
 private:
 	std::map < std::string, int > frequency;
