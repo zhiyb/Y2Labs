@@ -95,6 +95,7 @@
 
 % Elements
 
+% FIXME: must use vspace instead of addvspace
 \NewEnviron{Figure}{%
 	\vspace{10pt}\begin{figure}[H]\centering
 	\BODY
@@ -106,9 +107,14 @@
 	\end{equation}\par\addvspace{6pt}
 }
 \NewEnviron{Gather}{%
-	\vspace{6pt}\begin{gather}
+	\addvspace{6pt}\begin{gather}
 	\BODY
 	\end{gather}\par\addvspace{6pt}
+}
+\NewEnviron{Table}{%
+	\addvspace{12pt}\begin{table}[H]
+	\BODY
+	\end{table}\par\addvspace{12pt}
 }
 \newcommand{\REFOnline}[2]{
 	% Author, Title, URL
