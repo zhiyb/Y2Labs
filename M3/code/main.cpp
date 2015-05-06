@@ -4,15 +4,17 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "field.h"
 #include "useful.h"
 #include "analyser.h"
 #include "countcode.h"
+#include "pipelinehazard.h"
 
 //#define ANALYSER	Analyser
-#define ANALYSER	CountCode
+//#define ANALYSER	CountCode
+#define ANALYSER	PipelineHazard
 
 #define READ_LIMIT	10000000
-#define FIELD_COUNT	14
 
 using namespace std;
 
