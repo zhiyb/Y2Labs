@@ -30,7 +30,7 @@ void PipelineHazard::report(void)
 	int hazards = 0;
 	for (it = access.begin(); it != access.end(); ++it) {
 		cout << it->first << " => " << it->second << endl;
-		hazards += detect(it->first);
+		hazards += detect(it->first) * it->second;
 	}
 	cout << hazards << " data hazards" << endl;
 }
