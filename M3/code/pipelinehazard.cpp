@@ -29,9 +29,12 @@ void PipelineHazard::report(void)
 	cout << access.size() << " different accesses" << endl;
 	int hazards = 0;
 	for (it = access.begin(); it != access.end(); ++it) {
-		cout << it->first << " => " << it->second << endl;
-		hazards += detect(it->first) * it->second;
+		bool det = detect(it->first);
+		cout << (det ? "\e[1;31m" : "\e[1;32m");
+		cout << it->first << "\t=>\t" << it->second << endl;
+		hazards += det * it->second;
 	}
+	cout << "\e[0m";
 	cout << hazards << " data hazards" << endl;
 }
 
