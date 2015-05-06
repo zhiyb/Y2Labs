@@ -53,11 +53,14 @@ private:
 	double errRate;
 } decoder;
 
+uint16_t noiseCount = 0, dataCount = 0;
+
 void noise(float rate)
 {
-	if ((rand() & 0xFFFF) < (rate * 0xFFFF))
+	if ((rand() & 0xFFFF) < (rate * 0xFFFF)) {
 		PORTB |= COM_DATA;
-	else
+		noiseCount++;
+	} else
 		PORTB &= ~COM_DATA;
 }
 
@@ -139,6 +142,7 @@ loop:
 		noise(RATE);
 		newData = enc_pool(newData ? data : DATA_WAITING);
 		data += newData;
+		dataCount += newData;
 		uint8_t dec = decoder.recv();
 		if (dec == DATA_WAITING)
 			continue;
@@ -148,7 +152,7 @@ loop:
 	tft.setForeground(Red);
 	puts("Bit error rate:");
 	tft.setForeground(Green);
-	printf("%6.2f%%\n", RATE * 100.0);
+	printf("%6.2f%%\n", (double)noiseCount * 8 / dataCount);
 	tft.setForeground(Red);
 	puts("Data error rate:");
 	tft.setForeground(Green);
@@ -156,7 +160,7 @@ loop:
 	tft.setForeground(Red);
 	puts("Data count:");
 	tft.setForeground(Green);
-	printf("%u\n", decoder.count());
+	printf("%u\n", dataCount);
 	tft.setForeground(Red);
 	puts("Data error count:");
 	tft.setForeground(Green);
