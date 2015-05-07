@@ -1,5 +1,6 @@
 TRG	= sim
-SRC	= main.cpp useful.cpp countcode.cpp pipelinehazard.cpp
+SRC	= main.cpp useful.cpp countcode.cpp
+SRC	+= pipelinehazard.cpp branchhazard.cpp
 ARG	= gcc.trace.csv
 
 include ../Makefile.defs

@@ -9,10 +9,12 @@
 #include "analyser.h"
 #include "countcode.h"
 #include "pipelinehazard.h"
+#include "branchhazard.h"
 
 //#define ANALYSER	Analyser
 //#define ANALYSER	CountCode
-#define ANALYSER	PipelineHazard
+//#define ANALYSER	PipelineHazard
+#define ANALYSER	BranchHazard
 
 #define READ_LIMIT	10000000
 
