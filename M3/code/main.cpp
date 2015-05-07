@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
 #include "field.h"
 #include "useful.h"
 #include "analyser.h"
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
 		cerr << "Usage: " << argv[0] << " file" << endl;
 		return 1;
 	}
+	srand(time(NULL));
 	Analyser *analyser = new ANALYSER;
 	analyser->init();
 	unsigned int counter = 0;

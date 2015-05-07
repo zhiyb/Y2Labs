@@ -4,19 +4,21 @@
 #include "useful.h"
 #include "branchhazard.h"
 
-#define DEPTH	2
+//#define PREDICT_ALWAYS_TAKEN
+//#define PREDICT_ALWAYS_NOT_TAKEN
+#define PREDICT_RANDOM
 
 using namespace std;
 
 void BranchHazard::analyse(const trace_t *trace)
 {
 	if (!previous.empty()) {
-		if (previous.at(field::FPC) == trace->at(field::PC))
-			incorrect++;
-		else if (previous.at(field::TPC) == trace->at(field::PC))
-			correct++;
-		else
+		bool t = previous.at(field::TPC) == trace->at(field::PC);
+		if (!t && previous.at(field::FPC) != trace->at(field::PC))
 			cerr << "Branch address error!" << endl;
+		total++;
+		taken += t;
+		correct += t == predict();
 		previous.clear();
 	}
 	string mop = trace->at(field::MicroOp);
@@ -27,6 +29,20 @@ void BranchHazard::analyse(const trace_t *trace)
 
 void BranchHazard::report(void)
 {
-	cout << correct << " branch taken" << endl;
-	cout << incorrect << " branch not taken" << endl;
+	cout << total << " branchs:" << endl;
+	cout << taken << " branch taken" << endl;
+	cout << total - taken << " branch not taken" << endl;
+	cout << correct << " prediction correct" << endl;
+	cout << total - correct << " prediction incorrect" << endl;
+}
+
+bool BranchHazard::predict(void)
+{
+#if defined(PREDICT_ALWAYS_TAKEN)
+	return true;
+#elif defined(PREDICT_ALWAYS_NOT_TAKEN)
+	return false;
+#elif defined(PREDICT_RANDOM)
+	return rand() % 2;
+#endif
 }

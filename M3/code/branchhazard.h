@@ -8,11 +8,13 @@
 class BranchHazard : public Analyser
 {
 public:
+	BranchHazard(void) : taken(0), correct(0), total(0) {}
 	void analyse(const trace_t *trace);
 	void report(void);
 private:
+	bool predict(void);
 	trace_t previous;
-	int correct, incorrect;
+	int taken, correct, total;
 };
 
 #endif
