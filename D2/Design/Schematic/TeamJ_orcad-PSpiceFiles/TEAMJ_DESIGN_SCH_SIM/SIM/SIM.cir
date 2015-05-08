@@ -1,0 +1,32 @@
+** Profile: "TEAMJ_DESIGN_SCH_SIM-SIM"  [ \\ugsamba.ecs.soton.ac.uk\yz39g13\Labs\D2\Schematic\teamj_orcad-pspicefiles\teamj_design_sch_sim\sim.sim ] 
+
+** Creating circuit file "SIM.cir" 
+** WARNING: THIS AUTOMATICALLY GENERATED FILE MAY BE OVERWRITTEN BY SUBSEQUENT SIMULATIONS
+
+*Libraries: 
+* Profile Libraries :
+* Local Libraries :
+.LIB "//ugsamba.ecs.soton.ac.uk/yz39g13/Labs/D2/layout/teamj_design_sim.spc" 
+.LIB "//ugsamba.ecs.soton.ac.uk/yz39g13/Labs/D2/layout/teamj_encoder_sim.spc" 
+.LIB "//ugsamba.ecs.soton.ac.uk/yz39g13/Labs/D2/layout/teamj_4bitsadder_sim.spc" 
+.LIB "//ugsamba.ecs.soton.ac.uk/yz39g13/Labs/D2/layout/teamj_decoder_sim.spc" 
+.LIB "//ugsamba.ecs.soton.ac.uk/yz39g13/Labs/D2/layout/teamj_encoder_sm_sim.spc" 
+.LIB "//ugsamba.ecs.soton.ac.uk/yz39g13/Labs/D2/layout/teamj_sequence_sim.spc" 
+.LIB "//ugsamba.ecs.soton.ac.uk/yz39g13/Labs/D2/layout/teamj_decoder_sm_sim.spc" 
+.LIB "//ugsamba.ecs.soton.ac.uk/yz39g13/Labs/D2/layout/teamj_decoder_comb_sim.spc" 
+.LIB "//ugsamba.ecs.soton.ac.uk/yz39g13/Labs/D2/layout/teamj_shiftregister_sim.spc" 
+.LIB "//ugsamba.ecs.soton.ac.uk/yz39g13/Labs/D2/layout/teamj_ringoscillator_sim.spc" 
+.LIB "//ugsamba.ecs.soton.ac.uk/yz39g13/Labs/D2/layout/tamej_halfadder_sim.spc" 
+.LIB "../../../d2.lib" 
+* From [PSPICE NETLIST] section of C:\Users\yz39g13\AppData\Local\Temp\16.6.0/PSpice.ini file:
+.lib "nom.lib" 
+
+*Analysis directives: 
+.TRAN  0 400ns 0 
+.OPTIONS ADVCONV
+.OPTIONS THREADS= 8
+.PROBE64 V(alias(*)) I(alias(*)) W(alias(*)) D(alias(*)) NOISE(alias(*)) 
+.INC "..\TEAMJ_DESIGN_SCH_SIM.net" 
+
+
+.END
