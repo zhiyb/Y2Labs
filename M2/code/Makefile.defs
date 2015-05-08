@@ -106,25 +106,25 @@ endif
 
 CLEAN_FILES	+= $(OBJS)
 $(TRG).elf: $(OBJS) $(LIBFILES)
-	$(call verbose,"LD\t$@",\
+	$(call verbose,"LD	$@",\
 	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(NEWLIBS) $(LIBS))
-	$(call verbose,"SIZE\t$@",\
+	$(call verbose,"SIZE	$@",\
 	$(SIZE) $@)
 
 %.o: %.c
-	$(call verbose,"CC\t$<",\
+	$(call verbose,"CC	$<",\
 	$(CC) $(CFLAGS) -c -o $@ $<)
 
 %.o: %.cpp
-	$(call verbose,"CXX\t$<",\
+	$(call verbose,"CXX	$<",\
 	$(CXX) $(CXXFLAGS) -c -o $@ $<)
 
 %.o: %.S
-	$(call verbose,"AS\t$<",\
+	$(call verbose,"AS	$<",\
 	$(AS) $(ASFLAGS) -c -o $@ $<)
 
 %.lst: %.elf
-	$(call verbose,"GEN\t$@",\
+	$(call verbose,"GEN	$@",\
 	$(OBJDUMP) -h -S $< > $@)
 
 ifdef LIBTRG
@@ -137,13 +137,13 @@ lib-static: lib$(LIBTRG).a
 CLEAN_FILES	+= lib$(LIBTRG).a
 
 lib$(LIBTRG).a: $(OBJS)
-	$(call verbose,"AR\t$@",\
+	$(call verbose,"AR	$@",\
 	$(AR) $(ARFLAGS) $@ $(OBJS))
 endif
 
 # Libraries
 $(LIBFILES): %:
-	$(call verbose,"MAKE\t$@",\
+	$(call verbose,"MAKE	$@",\
 	$(MAKE) -C $(dir $@))
 
 # Dependency
@@ -166,12 +166,12 @@ CLEAN_DIRS	+= $(LIBDIRS:%=clean-%)
 endif
 .PHONY: $(CLEAN_DIRS)
 $(CLEAN_DIRS):
-	$(call verbose,"CLEAN\t$(@:clean-%=%)",\
+	$(call verbose,"CLEAN	$(@:clean-%=%)",\
 	$(MAKE) -C $(@:clean-%=%) clean)
 
 .PHONY: clean
 clean: $(CLEAN_DIRS)
-	$(call verbose,"CLEAN\t$(CLEAN_FILES)",\
+	$(call verbose,"CLEAN	$(CLEAN_FILES)",\
 	$(RM) $(CLEAN_FILES))
 
 # Following are not needed when building libraries
@@ -183,15 +183,15 @@ text: hex
 PHONYTRGS	+= hex bin srec
 
 %.hex: %.elf
-	$(call verbose,"GEN\t$@",\
+	$(call verbose,"GEN	$@",\
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@)
 
 %.srec: %.elf
-	$(call verbose,"GEN\t$@",\
+	$(call verbose,"GEN	$@",\
 	$(OBJCOPY) -j .text -j .data -O srec $< $@)
 
 %.bin: %.elf
-	$(call verbose,"GEN\t$@",\
+	$(call verbose,"GEN	$@",\
 	$(OBJCOPY) -j .text -j .data -O binary $< $@)
 
 # Rules for building the .eeprom rom images
@@ -206,15 +206,15 @@ CLEAN_FILES	+= $(EEPTRGS:e%=$(TRG)_eeprom.%)
 $(EEPTRGS): e%: $(TRG)_eeprom.%
 
 %_eeprom.hex: %.elf
-	$(call verbose,"GEN\t$@",\
+	$(call verbose,"GEN	$@",\
 	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex $< $@)
 
 %_eeprom.srec: %.elf
-	$(call verbose,"GEN\t$@",\
+	$(call verbose,"GEN	$@",\
 	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O srec $< $@)
 
 %_eeprom.bin: %.elf
-	$(call verbose,"GEN\t$@",\
+	$(call verbose,"GEN	$@",\
 	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O binary $< $@)
 
 # For program MCU with avrdude.
