@@ -37,4 +37,9 @@ void Cache::report(void)
 	cout << total << " cache accesses" << endl;
 	cout << hit << " hit" << endl;
 	cout << ((float)hit / total) << " hit rate" << endl;
+	int unused = 0;
+	for (int i = 0; i < CACHE_SIZE; i++)
+		if (!cache[i].valid)
+			unused++;
+	cout << unused << " unused cache entries" << endl;
 }
