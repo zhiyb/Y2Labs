@@ -14,5 +14,5 @@ void CountCode::report(void)
 	std::map < std::string, int > ::iterator it;
 	cout << frequency.size() << " different instructions used" << endl;
 	for (it = frequency.begin(); it != frequency.end(); ++it)
-		cout << it->first << " => " << it->second << endl;
+		cout << it->first << "\t=>\t" << it->second << endl;
 }

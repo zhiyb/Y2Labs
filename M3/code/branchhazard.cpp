@@ -6,7 +6,8 @@
 
 //#define PREDICT_ALWAYS_TAKEN
 //#define PREDICT_ALWAYS_NOT_TAKEN
-#define PREDICT_RANDOM
+//#define PREDICT_RANDOM
+#define PREDICT_DYNAMIC
 
 using namespace std;
 
@@ -18,7 +19,11 @@ void BranchHazard::analyse(const trace_t *trace)
 			cerr << "Branch address error!" << endl;
 		total++;
 		taken += t;
-		correct += t == predict();
+		int addr = toInt(previous.at(field::PC));
+		correct += t == predict(addr);
+#if defined(PREDICT_DYNAMIC)
+		prediction[addr] = t;
+#endif
 		previous.clear();
 	}
 	string mop = trace->at(field::MicroOp);
@@ -36,7 +41,7 @@ void BranchHazard::report(void)
 	cout << total - correct << " prediction incorrect" << endl;
 }
 
-bool BranchHazard::predict(void)
+bool BranchHazard::predict(int addr)
 {
 #if defined(PREDICT_ALWAYS_TAKEN)
 	return true;
@@ -44,5 +49,11 @@ bool BranchHazard::predict(void)
 	return false;
 #elif defined(PREDICT_RANDOM)
 	return rand() % 2;
+#elif defined(PREDICT_DYNAMIC)
+	map<int, bool>::iterator it;
+	it = prediction.find(addr);
+	if (it == prediction.end())
+		prediction.insert(pair<int, bool>(addr, 1));
+	return prediction[addr];
 #endif
 }

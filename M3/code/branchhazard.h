@@ -12,7 +12,8 @@ public:
 	void analyse(const trace_t *trace);
 	void report(void);
 private:
-	bool predict(void);
+	bool predict(int addr);
+	std::map<int, bool> prediction;
 	trace_t previous;
 	int taken, correct, total;
 };

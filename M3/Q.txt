@@ -1,0 +1,19 @@
+Because word processor is processing characters, and things like line & word counting are all integer numbers.
+MP3 decode algorithm & audio effects would require floating point calculations.
+
+In game Quake, 3D algorithm (e.g. rotation, transformation, image textures), music & sound, need floating point calculations.
+Properties (e.g. HP, player number, weapons), network communication protocol need integer operations.
+
+LOAD (>20%) & JMP (>15%) used most frequently, as these are used for memory accessing and branch instructions.
+Hmmer (Biosequence analysis) uses the most kinds of different instructions, including floating point calcuations.
+MCF (Vehicle scheduling) has many integer and logic calculation instructions (probably time calucations).
+Integer calculations were used mostly in GCC.
+libquantum simulates a quantum computer, it uses Load, control, integer, logic operations.
+
+TAG	OFFSET	BLOCK
+10	10	3
+
+22:0
+22:13 12:3 2:0
+
+Use map to associate a structure containing {valid, tag, memory space} to every cache offset. First data would be offset, for find cache block.
