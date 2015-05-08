@@ -11,11 +11,13 @@
 #include "countcode.h"
 #include "pipelinehazard.h"
 #include "branchhazard.h"
+#include "cache.h"
 
 //#define ANALYSER	Analyser
 //#define ANALYSER	CountCode
 //#define ANALYSER	PipelineHazard
-#define ANALYSER	BranchHazard
+//#define ANALYSER	BranchHazard
+#define ANALYSER	Cache
 
 #define READ_LIMIT	10000000
 
