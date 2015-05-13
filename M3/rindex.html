@@ -1,0 +1,334 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head></head>
+<body><p><font size="+1"><b>Lab M3: Computer Simulation</b></font></p>
+<!--<p>
+        <b>Outline</b>
+        <ul>
+                <li><p>Description of lab to go here.</p>
+        </ul>
+</p>
+
+<p>
+        <b>Material</b>
+        <ul>
+			Lab Notes [missing]
+        </ul>
+</p>
+-->
+
+<a href="m3-lab.pdf">Notes</a> for the M3 lab on <big><span style="font-weight: bold;">Computer Simulation.<br><br><span style="color: red;">There is no formal preparation for this lab, just read the notes and try some of the examples. &nbsp;This will not be marked.</span><br style="color: red;"><br style="color: red;"><span style="color: red;">The
+answers to the questions will be recorded on a form provided. This will
+be the basis of your marks. While you are advised to record things in
+your log book this will not be marked, provided that the form has been
+securly attached to the book.</span><br style="color: red;"></span></big>
+<br>You can dowload the form from here. Print out 2 copies, one for each group member.<br><br><br>Simulation files will be found on the  X drive in<span style="font-family: monospace;"> X:/simulation/</span> <br><h3>Example of Trace File Trace</h3>
+<table class="docutils docutils" border="1">
+<colgroup><col width="3%"><col width="6%"><col width="4%"><col width="4%"><col width="5%"><col width="5%"><col width="6%"><col width="5%"><col width="8%"><col width="11%"><col width="13%"><col width="9%"><col width="11%"><col width="11%"></colgroup>
+<thead valign="bottom">
+<tr><th style="font-weight: bold;" class="head"><em>1</em></th>
+<th style="font-weight: bold;" class="head"><em>2</em></th>
+<th style="font-weight: bold;" class="head"><em>3</em></th>
+<th style="font-weight: bold;" class="head"><em>4</em></th>
+<th style="font-weight: bold;" class="head"><em>5</em></th>
+<th style="font-weight: bold;" class="head"><em>6</em></th>
+<th style="font-weight: bold;" class="head"><em>7</em></th>
+<th style="font-weight: bold;" class="head"><em>8</em></th>
+<th style="font-weight: bold;" class="head"><em>9</em></th>
+<th style="font-weight: bold;" class="head"><em>10</em></th>
+<th style="font-weight: bold;" class="head"><em>11</em></th>
+<th style="font-weight: bold;" class="head"><em>12</em></th>
+<th style="font-weight: bold;" class="head"><em>13</em></th>
+<th style="font-weight: bold;" class="head"><em>14</em></th>
+</tr>
+<tr><th class="head">Uop</th>
+<th class="head">PC</th>
+<th class="head">Src1</th>
+<th class="head">Src2</th>
+<th class="head">Dest</th>
+<th class="head">Flags</th>
+<th class="head">Branch</th>
+<th class="head">Ld/St</th>
+<th class="head">Immediate</th>
+<th class="head">Mem. Address</th>
+<th class="head">Fallthrough PC</th>
+<th class="head">Target PC</th>
+<th class="head">Macro Opcode</th>
+<th class="head">Micro Opcode</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>1</td>
+<td>48d1de</td>
+<td>-1</td>
+<td>-1</td>
+<td>13</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td>0</td>
+<td>48d1e2</td>
+<td>0</td>
+<td>SET</td>
+<td>ADD</td>
+</tr>
+<tr><td>2</td>
+<td>48d1de</td>
+<td>-1</td>
+<td>-1</td>
+<td>13</td>
+<td>R</td>
+<td>-</td>
+<td>-</td>
+<td>1</td>
+<td>0</td>
+<td>48d1e2</td>
+<td>0</td>
+<td>SET</td>
+<td>ADD_IMM</td>
+</tr>
+<tr><td>1</td>
+<td>48d1e2</td>
+<td>-1</td>
+<td>5</td>
+<td>45</td>
+<td>-</td>
+<td>-</td>
+<td>L</td>
+<td>-264</td>
+<td>7fffe7ff048</td>
+<td>48d1e9</td>
+<td>0</td>
+<td>CMP</td>
+<td>LOAD</td>
+</tr>
+<tr><td>2</td>
+<td>48d1e2</td>
+<td>45</td>
+<td>3</td>
+<td>44</td>
+<td>W</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td>0</td>
+<td>48d1e9</td>
+<td>0</td>
+<td>CMP</td>
+<td>SUB</td>
+</tr>
+<tr><td>1</td>
+<td>48d1e9</td>
+<td>-1</td>
+<td>5</td>
+<td>3</td>
+<td>-</td>
+<td>-</td>
+<td>L</td>
+<td>-200</td>
+<td>7fffe7ff088</td>
+<td>48d1f0</td>
+<td>0</td>
+<td>MOV</td>
+<td>LOAD</td>
+</tr>
+<tr><td>1</td>
+<td>48d1f0</td>
+<td>-1</td>
+<td>-1</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td>0</td>
+<td>48d1f3</td>
+<td>0</td>
+<td>SET</td>
+<td>ADD</td>
+</tr>
+<tr><td>2</td>
+<td>48d1f0</td>
+<td>-1</td>
+<td>-1</td>
+<td>0</td>
+<td>R</td>
+<td>-</td>
+<td>-</td>
+<td>1</td>
+<td>0</td>
+<td>48d1f3</td>
+<td>0</td>
+<td>SET</td>
+<td>ADD_IMM</td>
+</tr>
+<tr><td>1</td>
+<td>48d1f3</td>
+<td>-1</td>
+<td>-1</td>
+<td>12</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td>0</td>
+<td>48d1f6</td>
+<td>0</td>
+<td>XOR</td>
+<td>ADD</td>
+</tr>
+<tr><td>1</td>
+<td>48d1f6</td>
+<td>13</td>
+<td>0</td>
+<td>13</td>
+<td>W</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td>0</td>
+<td>48d1f9</td>
+<td>0</td>
+<td>OR</td>
+<td>OR</td>
+</tr>
+<tr><td>1</td>
+<td>48d1f9</td>
+<td>-1</td>
+<td>-1</td>
+<td>-1</td>
+<td>-</td>
+<td>T</td>
+<td>-</td>
+<td>54</td>
+<td>0</td>
+<td>48d1fb</td>
+<td>48d231</td>
+<td>JMP</td>
+<td>JMP_IMM</td>
+</tr>
+<tr><td>1</td>
+<td>48d231</td>
+<td>-1</td>
+<td>3</td>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+<td>L</td>
+<td>0</td>
+<td>7fffe7fefd0</td>
+<td>48d234</td>
+<td>0</td>
+<td>MOV</td>
+<td>LOAD</td>
+</tr>
+<tr><td>1</td>
+<td>48d234</td>
+<td>0</td>
+<td>0</td>
+<td>44</td>
+<td>W</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td>0</td>
+<td>48d237</td>
+<td>0</td>
+<td>TEST</td>
+<td>AND</td>
+</tr>
+<tr><td>1</td>
+<td>48d237</td>
+<td>-1</td>
+<td>-1</td>
+<td>-1</td>
+<td>R</td>
+<td>N</td>
+<td>-</td>
+<td>-25</td>
+<td>0</td>
+<td>48d239</td>
+<td>48d220</td>
+<td>J</td>
+<td>JMP_IMM</td>
+</tr>
+<tr><td>1</td>
+<td>48d239</td>
+<td>-1</td>
+<td>0</td>
+<td>7</td>
+<td>-</td>
+<td>-</td>
+<td>L</td>
+<td>8</td>
+<td>12ff228</td>
+<td>48d23d</td>
+<td>0</td>
+<td>MOV</td>
+<td>LOAD</td>
+</tr>
+<tr><td>1</td>
+<td>48d23d</td>
+<td>-1</td>
+<td>7</td>
+<td>44</td>
+<td>-</td>
+<td>-</td>
+<td>L</td>
+<td>0</td>
+<td>12ff200</td>
+<td>48d240</td>
+<td>0</td>
+<td>MOVZX</td>
+<td>LOAD</td>
+</tr>
+</tbody>
+</table>
+
+<div class="section" id="field-descriptions">
+<h3>Field Descriptions</h3>
+<p>The fields are:</p>
+<ol class="arabic simple"><li><strong>Uop</strong> is a counter for the micro-ops within a macro-op.  If you
+look at the first two lines of the example trace above, you'll notice
+that they are part of the same macro-op.  The first micro-op has
+value 1, the second is 2, etc.  Use this information to decide how
+many micro-ops there are in a particular macro-op.  [32-bit decimal]</li><li><strong>PC</strong> is the address of the instruction being executed.  [64-bit
+hexadecimal]</li><li><strong>Src1</strong> is the first source register.  A value of -1 indicates that
+no register is read for the source. [32-bit signed decimal]</li><li><strong>Src2</strong> is the second source register.  A value of -1 indicates
+that no register is read for the source. [32-bit signed decimal]</li><li><strong>Dest</strong> is the destination registers.  A value of -1 indicates
+that no register is written. [32-bit signed decimal]</li><li><strong>Flags</strong> indicates if the instruction reads or writes the condition
+codes (also know as the flags in x86).  This field is a single
+character that signifies if the micro-op reads the flags ('R'),
+writes the flags ('W'), or neither ('-').  [Single character]</li><li><strong>Branch</strong> indicates if a micro-op is "taken" to the target PC ('T'),
+"not taken" and thus proceeds to the fall through PC ('N'), or a
+non-branch micro-operation ('-'). [Single character]</li><li><strong>Ld/St</strong> indicates if a micro-op loads from memory ('L'), stores to
+memory ('S'), or neither ('-').  [Single character]</li><li><strong>Immediate</strong> indicates the value of any immediate to the instruction. [64-bit signed decimal]</li><li><strong>Memory Address</strong> indicates the address accessed by a load or
+store.  If the micro-op doesn't access memory, this field will have
+the value zero.  [64-bit hexadecimal]</li><li><strong>Fallthough PC</strong> indicates the address of the instruction that immediately
+follows this instruction in memory; that is, if this instruction is
+a not-taken branch, this field holds the address of the instruction
+that will be executed.  Note that the trace format is showing
+micro-ops; that is why you see the same address multiple times in a
+row.  All micro-ops that are part of the same instruction will share
+the same fall-through address.   [64-bit hexadecimal]</li><li><strong>Target PC</strong> indicates the address that a branch will go to if the
+branch is taken.  This field is set to zero for non-control
+instructions.  [64-bit hexadecimal]</li><li><strong>Macro opcode</strong> is the printable string that corresponds to the x86
+assembly instruction.  This is the same for all the micro-ops in the
+macro-op. [String]</li><li><strong>Micro opcode</strong> is the printable string that describes the specific
+micro-ops used in our simulation. [String]</li></ol>
+</div>The trace files have been converted to &nbsp;comma separated value (csv) files for ease of parsing.<br><h3>Example Programs.</h3>This is a <a href="generic.cpp">generic c++ program</a> for reading a .trace.csv file.<br><br>This file reads a .trace.csv file and<a href="countcode.cpp"> counts the number of different instructions used</a>.<br><br>Finally some <a href="useful.cpp">useful code fragments</a>, to help with counting things and print progress in a pleasing manner. Cut and paste these into your program before the <span style="font-style: italic; font-weight: bold;">main()</span> statement.<br><h3>Available trace.csv files.</h3><ul class="simple"><li><span class="reference external">gcc.trace.csv</span> (The GCC compiler)</li><li><span class="reference external">hmmer.trace.csv</span> (Biosequence analysis using profile hidden Markov models) - <a class="reference external" href="http://www.spec.org/cpu2006/Docs/456.hmmer.html">http://www.spec.org/cpu2006/Docs/456.hmmer.html</a></li><li><span class="reference external">libquantum.trace.csv</span> (Simulation of quantum mechanics) - <a class="reference external" href="http://www.spec.org/cpu2006/Docs/462.libquantum.html">http://www.spec.org/cpu2006/Docs/462.libquantum.html</a></li><li><span class="reference external">art.trace.csv</span> (Image recognition using neural networks) - <a class="reference external" href="http://www.spec.org/cpu2000/CFP2000/179.art/docs/179.art.html">http://www.spec.org/cpu2000/CFP2000/179.art/docs/179.art.html</a></li><li><span class="reference external">mcf.trace.csv</span> (Vehicle scheduling) - <a class="reference external" href="http://www.spec.org/cpu2006/Docs/429.mcf.html">http://www.spec.org/cpu2006/Docs/429.mcf.html</a></li><li>abs.mixed.trace.csv.
+This file is a mixture of the above with additional memory mapping to
+give the physical address of the instruction loaded. It simulates a
+multi-tasking environment. Note that it has an extra field - the
+absolute address of the instruction.</li></ul>Further but unnessary information can be found about the trace files in the links above.<br><br>The
+.trace.csv files are very big, several gigabytes each. They are not
+available on the intranet but will be preloaded on worksations in the
+electronics lab.
+<br><br>Here is a <a href="gcc-1K.trace.csv.txt">trace file</a> containig the first thousand &nbsp;instruction executions of gcc.trace.csv. Download it and rename it to gcc-1K.trace.csv.<br><br><span style="color: red;"></span>Here is the first thousand lines of&nbsp; a <a href="abs.mixed-1K.trace.csv.txt">trace file</a> with the aditional absolute address of the program counter as the 15th entry. Download and rename to abs.mixed-1K.trace.csv<br><hr style="width: 100%; height: 2px;">John Carter<br>
+
+
+<p><br><i><font size="-2">Last updated 2014 May  (Section 2.3 revised)</font></i></p>
+
+
+
+</body></html>

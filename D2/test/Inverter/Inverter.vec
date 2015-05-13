@@ -1,0 +1,11 @@
+# Inverter
+<PinDef>
+# A Q
+# Input, Output
+A0, Q0
+</PinDef>
+
+<TestVector>
+0 1
+1 0
+</TestVector>
