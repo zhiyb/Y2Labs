@@ -1,0 +1,193 @@
+(ExpressProject "TeamJ_orcad"
+  (ProjectVersion "19981106")
+  (ProjectType "Analog or A/D Mixed Mode")
+  (Folder "Design Resources"
+    (Folder "Library")
+    (NoModify)
+    (File ".\teamj_orcad.dsn"
+      (Type "Schematic Design"))
+    (BuildFileAddedOrDeleted "x")
+    (CompileFileAddedOrDeleted "x")
+    (RootChangedForceReNetlist "x")
+    (PSPICE_Regenerate_Netlist_Flag "FALSE")
+    (Netlist_TAB "6")
+    (VERILOG_Part_Value "{Value}")
+    (VERILOG_Netlist_File "TEAMJ_ORCAD_LAYOUT.V")
+    (VERILOG_View_Output "FALSE")
+    (Verilog_timescale_value_string "1ns/1ps")
+    (Verilog_Net_types "wire")
+    (Verilog_include_power_pins "FALSE")
+    (Verilog_Textcase "2"))
+  (Folder "Outputs"
+    (File
+       "\\\ugsamba.ecs.soton.ac.uk\yz39g13\labs\d2\schematic\\design-placements.csv"
+      (Type "Report"))
+    (File ".\teamj_orcad_layout.v"
+      (Type "Report")))
+  (Folder "PSpice Resources"
+    (Folder "Simulation Profiles")
+    (Folder "Model Libraries"
+      (File ".\teamj_design_sim.spc"
+        (DisplayName "..\layout\teamj_design_sim.spc")
+        (Type "PSpiceLibrary"))
+      (File ".\teamj_encoder_sim.spc"
+        (DisplayName "..\layout\teamj_encoder_sim.spc")
+        (Type "PSpiceLibrary"))
+      (File ".\teamj_4bitsadder_sim.spc"
+        (DisplayName "..\layout\teamj_4bitsadder_sim.spc")
+        (Type "PSpiceLibrary"))
+      (File ".\teamj_decoder_sim.spc"
+        (DisplayName "..\layout\teamj_decoder_sim.spc")
+        (Type "PSpiceLibrary"))
+      (File ".\teamj_encoder_sm_sim.spc"
+        (DisplayName "..\layout\teamj_encoder_sm_sim.spc")
+        (Type "PSpiceLibrary"))
+      (File ".\teamj_sequence_sim.spc"
+        (DisplayName "..\layout\teamj_sequence_sim.spc")
+        (Type "PSpiceLibrary"))
+      (File ".\teamj_decoder_sm_sim.spc"
+        (DisplayName "..\layout\teamj_decoder_sm_sim.spc")
+        (Type "PSpiceLibrary"))
+      (File ".\teamj_decoder_comb_sim.spc"
+        (DisplayName "..\layout\teamj_decoder_comb_sim.spc")
+        (Type "PSpiceLibrary"))
+      (File ".\teamj_shiftregister_sim.spc"
+        (DisplayName "..\layout\teamj_shiftregister_sim.spc")
+        (Type "PSpiceLibrary"))
+      (File ".\teamj_ringoscillator_sim.spc"
+        (DisplayName "..\layout\teamj_ringoscillator_sim.spc")
+        (Type "PSpiceLibrary"))
+      (File ".\tamej_halfadder_sim.spc"
+        (DisplayName "..\layout\tamej_halfadder_sim.spc")
+        (Type "PSpiceLibrary"))
+      (File ".\d2.lib"
+        (DisplayName ".\d2.lib")
+        (Type "PSpiceLibrary"))
+      (Sort User))
+    (Folder "Stimulus Files")
+    (Folder "Include Files"))
+  (DefaultLibraryBrowseDirectory "library\PSpice")
+  (PartMRUSelector
+    (STIM1
+      (FullPartName "STIM1.Normal")
+      (LibraryName
+         "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (FileStim1
+      (FullPartName "FileStim1.Normal")
+      (LibraryName
+         "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (TEAMJ_DESIGN_SIM
+      (FullPartName "TEAMJ_DESIGN_SIM.Normal")
+      (LibraryName "H:\LABS\D2\LAYOUT\TEAMJ_DESIGN_SIM.OLB")
+      (DeviceIndex "0"))
+    (portout
+      (LibraryName "H:\LABS\D2\SCHEMATIC\D2_H.OLB")
+      (DeviceIndex "0"))
+    (portin
+      (LibraryName "H:\LABS\D2\SCHEMATIC\D2_H.OLB")
+      (DeviceIndex "0"))
+    (NAND21_H
+      (FullPartName "NAND21_H.Normal")
+      (LibraryName "H:\LABS\D2\SCHEMATIC\D2_H.OLB")
+      (DeviceIndex "0"))
+    (XOR21_H
+      (FullPartName "XOR21_H.Normal")
+      (LibraryName "H:\LABS\D2\SCHEMATIC\D2_H.OLB")
+      (DeviceIndex "0"))
+    (DigClock
+      (FullPartName "DigClock.Normal")
+      (LibraryName
+         "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (TEAMJ_ENCODER_SIM
+      (FullPartName "TEAMJ_ENCODER_SIM.Normal")
+      (LibraryName "H:\LABS\D2\LAYOUT\TEAMJ_ENCODER_SIM.OLB")
+      (DeviceIndex "0"))
+    (DFC1_H
+      (FullPartName "DFC1_H.Normal")
+      (LibraryName "H:\LABS\D2\SCHEMATIC\D2_H.OLB")
+      (DeviceIndex "0"))
+    (TEAMJ_DECODER_SIM
+      (FullPartName "TEAMJ_DECODER_SIM.Normal")
+      (LibraryName "H:\LABS\D2\LAYOUT\TEAMJ_DECODER_SIM.OLB")
+      (DeviceIndex "0"))
+    (INV1_H
+      (FullPartName "INV1_H.Normal")
+      (LibraryName "H:\LABS\D2\SCHEMATIC\D2_H.OLB")
+      (DeviceIndex "0"))
+    (TEAMJ_4BITSADDER_SIM
+      (FullPartName "TEAMJ_4BITSADDER_SIM.Normal")
+      (LibraryName "H:\LABS\D2\LAYOUT\TEAMJ_4BITSADDER_SIM.OLB")
+      (DeviceIndex "0"))
+    (TEAMJ_DECODER_SM_SIM
+      (FullPartName "TEAMJ_DECODER_SM_SIM.Normal")
+      (LibraryName "H:\LABS\D2\LAYOUT\TEAMJ_DECODER_SM_SIM.OLB")
+      (DeviceIndex "0"))
+    (VCC
+      (LibraryName "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (TEAMJ_SEQUENCE_SIM
+      (FullPartName "TEAMJ_SEQUENCE_SIM.Normal")
+      (LibraryName "H:\LABS\D2\LAYOUT\TEAMJ_SEQUENCE_SIM.OLB")
+      (DeviceIndex "0"))
+    (TEAMJ_RINGOSCILLATOR_SIM
+      (FullPartName "TEAMJ_RINGOSCILLATOR_SIM.Normal")
+      (LibraryName "H:\LABS\D2\LAYOUT\TEAMJ_RINGOSCILLATOR_SIM.OLB")
+      (DeviceIndex "0"))
+    (MUX21_H
+      (FullPartName "MUX21_H.Normal")
+      (LibraryName "H:\LABS\D2\SCHEMATIC\D2_H.OLB")
+      (DeviceIndex "0"))
+    (TEAMJ_ENCODER_SM_SIM
+      (FullPartName "TEAMJ_ENCODER_SM_SIM.Normal")
+      (LibraryName "H:\LABS\D2\LAYOUT\TEAMJ_ENCODER_SM_SIM.OLB")
+      (DeviceIndex "0"))
+    (NOR21_H
+      (FullPartName "NOR21_H.Normal")
+      (LibraryName "H:\LABS\D2\SCHEMATIC\D2_H.OLB")
+      (DeviceIndex "0"))
+    (NOR41_H
+      (FullPartName "NOR41_H.Normal")
+      (LibraryName "H:\LABS\D2\SCHEMATIC\D2_H.OLB")
+      (DeviceIndex "0"))
+    (NOR31_H
+      (FullPartName "NOR31_H.Normal")
+      (LibraryName "H:\LABS\D2\SCHEMATIC\D2_H.OLB")
+      (DeviceIndex "0"))
+    (NAND41_H
+      (FullPartName "NAND41_H.Normal")
+      (LibraryName "H:\LABS\D2\SCHEMATIC\D2_H.OLB")
+      (DeviceIndex "0"))
+    (TEAMJ_DECODER_COMB_SIM
+      (FullPartName "TEAMJ_DECODER_COMB_SIM.Normal")
+      (LibraryName "H:\LABS\D2\LAYOUT\TEAMJ_DECODER_COMB_SIM.OLB")
+      (DeviceIndex "0"))
+    (TEAMJ_SHIFTREGISTER_SIM
+      (FullPartName "TEAMJ_SHIFTREGISTER_SIM.Normal")
+      (LibraryName "H:\LABS\D2\LAYOUT\TEAMJ_SHIFTREGISTER_SIM.OLB")
+      (DeviceIndex "0")))
+  (GlobalState
+    (FileView
+      (Path "Design Resources")
+      (Path "Design Resources" "H:\Labs\D2\Design\Schematic\teamj_orcad.dsn")
+      (Path "Design Resources" "H:\Labs\D2\Design\Schematic\teamj_orcad.dsn"
+         "TEAMJ_DESIGN")
+      (Path "Design Resources" "H:\Labs\D2\Design\Schematic\teamj_orcad.dsn"
+         "TEAMJ_DESIGN_SCH_SIM")
+      (Path "Outputs")
+      (Path "PSpice Resources")
+      (Path "PSpice Resources" "Model Libraries")
+      (Select "Design Resources" "H:\Labs\D2\Design\Schematic\teamj_orcad.dsn"
+         "TEAMJ_DESIGN" "DESIGN"))
+    (HierarchyView)
+    (Doc
+      (Type "COrCapturePMDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -8 -31 0 378 0 621"))
+      (Tab 0)))
+  (LastUsedLibraryBrowseDirectory
+     "C:\Cadence\SPB_16.6\tools\capture\library\pspice")
+  (MPSSessionName "yz39g13")
+  (ISPCBBASICLICENSE "false"))
