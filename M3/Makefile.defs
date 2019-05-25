@@ -1,56 +1,63 @@
-# Author: Yubo Zhi (yz39g13@soton.ac.uk)
+# General Makefile
+# Author: Yubo Zhi (normanzyb@gmail.com)
 
-# Outdated warning
-define outdated
-$(warning "$$($1) outdated, use $$($2) instead")
-endef
+# Root dir
+SRCDIR	?= .
 
-ifndef LIBTRG
+# Change variable type to simply-expanded
+SRC	:= $(SRC)
+LIBS	:= $(LIBS)
+DEFS	:= $(DEFS)
+SUBDIRS	:= $(SUBDIRS)
+INCDIRS	:= $(INCDIRS)
+
 # Defaults
-OPTLEVEL	?= s
-endif
 #CROSS_COMPILE	?=
+DEPDIR	?= .deps
+ifndef OPTIMIZE
+OPTLEVEL ?= s
+endif
 
 # Subdirectories
 define inc_subdir
-DIR	= $(1)
-include $(1)/Makefile
-SRC	+= $$(NSRC:%=$$(DIR)/%)
-LIB	+= $$(NLIB)
-LIBS	+= $$(NLIBS)
-DEFS	+= $$(NDEFS)
-INCDIRS	+= $$(NINCDIRS:%=$$(DIR)/%)
+DIR	:= $(1)
+include $(SRCDIR)/$$(DIR)/Makefile
 endef
-
 $(foreach dir,$(SUBDIRS),$(eval $(call inc_subdir,$(dir))))
 
-# Libs
-LIBDIR	?= ..
-LIBDIRS	= $(LIB:%=$(LIBDIR)/lib%)
-LIBFILES	= $(foreach lib,$(LIB),$(lib:%=$(LIBDIR)/lib%)/$(lib:%=lib%.a))
-
+# General target
 ifndef LIBTRG
-# General
-ifndef TRG
-$(call outdated,PRG,TRG)
-TRG	= $(PRG)
-endif
+TRG	?= $(PRG)
 endif
 
+# Append configuration definations
+define checkconf
+ifdef $1
+	DEFS	+= -D$1=$$($1)
+endif
+endef
+$(foreach conf,$(CONFS),$(eval $(call checkconf,$(conf))))
+define checkconf_d
+ifeq ($$($1),y)
+	DEFS	+= -D$1
+endif
+endef
+$(foreach conf,$(CONFS_D),$(eval $(call checkconf_d,$(conf))))
+
+# Cross compile target suffix
+ifndef CROSS_COMPILE
 ifeq ($(OS),Windows_NT)
-	TRG	:= $(TRG).exe
+	SUFFIX	?= .exe
 endif
-
-
-#DEFS	+= -fpack-struct -fshort-enums
-#DEFS	+= -funsigned-bitfields -funsigned-char
-NEWLIBS	= $(LIBDIRS:%=-L%) $(LIB:%=-l%)
-INCS	+= $(LIBDIRS:%=-I%)
-INCS	+= $(INCDIRS:%=-I%)
+else
+	SUFFIX	?= .elf
+endif
 
 ELF	= $(TRG)$(SUFFIX)
 OBJS	= $(subst .S,.o,$(subst .c,.o,$(SRC:.cpp=.o)))
-DEPS	= $(OBJS:.o=.d)
+vpath %.c $(SRCDIR)
+vpath %.cpp $(SRCDIR)
+vpath %.S $(SRCDIR)
 
 AR	= $(CROSS_COMPILE)ar
 AS	= $(CROSS_COMPILE)gcc
@@ -58,28 +65,30 @@ CC	= $(CROSS_COMPILE)gcc
 CXX	= $(CROSS_COMPILE)g++
 LD	= $(CROSS_COMPILE)g++
 SIZE	= $(CROSS_COMPILE)size
-OBJCOPY	= $(CROSS_COMPILE)objcopy
 
-FLAGS	?= -g -Wall -Werror
-ifdef OPTIMIZE
-ifndef LIBTRG
-$(call outdated,OPTIMIZE,OPTLEVEL)
-endif
-FLAGS	+= $(OPTIMIZE)
-else
+# Flags
+INCS	+= $(INCDIRS:%=-I$(SRCDIR)/%)
+FLAGS	?= -g -Wall
+#FLAGS	+= -Werror
+ifdef OPTLEVEL
 FLAGS	+= -O$(OPTLEVEL)
 endif
-
-# Exports
-export DEFS OPTIMIZE OPTLEVEL
+FLAGS	+= $(OPTIMIZE)
 
 ARFLAGS	= $(ARFLG) rcs
-ASFLAGS	= $(ASFLG) $(DEFS) $(INCS) $(FLAGS)
-CFLAGS	= $(CFLG) $(DEFS) $(INCS) $(FLAGS)
-CXXFLAGS	= $(CXXFLG) $(DEFS) $(INCS) $(FLAGS)
-LDFLAGS	= $(LDFLG) $(FLAGS)
+ifdef $(OVERRIDE)
+override ASFLAGS	= $(ASFLAG) $(DEFS) $(INCS) $(FLAGS)
+override CFLAGS	= $(CFLAG) $(DEFS) $(INCS) $(FLAGS)
+override CXXFLAGS	= $(CXXFLAG) $(DEFS) $(INCS) $(FLAGS)
+override LDFLAGS	= $(LDFLAG) $(FLAGS)
+else
+ASFLAGS	= $(ASFLAG) $(DEFS) $(INCS) $(FLAGS)
+CFLAGS	= $(CFLAG) $(DEFS) $(INCS) $(FLAGS)
+CXXFLAGS	= $(CXXFLAG) $(DEFS) $(INCS) $(FLAGS)
+LDFLAGS	= $(LDFLAG) $(FLAGS)
+endif
 
-# Verbose display
+# Verbose
 define verbose
 	@if [ 'x$(VERBOSE)' = x ]; then	\
 		echo "  "$1;		\
@@ -89,38 +98,41 @@ define verbose
 	@$2
 endef
 
-# Rules
+# Default rule
 ifdef LIBTRG
 all: lib
 else
-all: $(ELF)
+all: $(ELF) $(EXTRA_TARGETS)
+CLEAN_FILES	+= $(ELF)
 endif
 
-CLEAN_FILES	+= $(ELF) $(OBJS)
+CLEAN_FILES	+= $(OBJS)
 $(ELF): $(OBJS) $(LIBFILES)
 	$(call verbose,"LD	$@",\
-	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(NEWLIBS) $(LIBS))
+	$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS))
 	$(call verbose,"SIZE	$@",\
 	$(SIZE) $@)
 
 %.o: %.c
+	@mkdir -p $(dir $(DEPDIR)/$*.d) $(dir $@)
 	$(call verbose,"CC	$<",\
-	$(CC) $(CFLAGS) -c -o $@ $<)
+	$(CC) $(CFLAGS) -c -o $@ $<) -MD -MP -MF "$(DEPDIR)/$*.d"
 
 %.o: %.cpp
+	@mkdir -p $(dir $(DEPDIR)/$*.d) $(dir $@)
 	$(call verbose,"CXX	$<",\
-	$(CXX) $(CXXFLAGS) -c -o $@ $<)
+	$(CC) $(CFLAGS) -c -o $@ $<) -MD -MP -MF "$(DEPDIR)/$*.d"
 
 %.o: %.S
 	$(call verbose,"AS	$<",\
 	$(AS) $(ASFLAGS) -c -o $@ $<)
 
-%.lst: %.elf
+%.lst: %$(SUFFIX)
 	$(call verbose,"GEN	$@",\
 	$(OBJDUMP) -h -S $< > $@)
 
+# Rules for building library
 ifdef LIBTRG
-# Rule for building library
 .PHONY: lib
 lib: lib-static
 
@@ -131,37 +143,17 @@ CLEAN_FILES	+= lib$(LIBTRG).a
 lib$(LIBTRG).a: $(OBJS)
 	$(call verbose,"AR	$@",\
 	$(AR) $(ARFLAGS) $@ $(OBJS))
-
-# Libraries
-$(LIBFILES): %:
-	$(call verbose,"MAKE	$@",\
-	$(MAKE) -C $(dir $@))
 endif
 
 # Dependency
-CLEAN_FILES	+= $(DEPS) $(DEPS:%=%.*)
--include $(DEPS)
-
-%.d: %.c
-	@set -e; rm -f $@; \
-	$(CC) -MM $(CFLAGS) $< | \
-	sed 's,[^:]*\.o[ :]*,$(<:.c=.o) $@ : ,g' > $@;
-
-%.d: %.cpp
-	@set -e; rm -f $@; \
-	$(CXX) -MM $(CXXFLAGS) $< | \
-	sed 's,[^:]*\.o[ :]*,$(<:.cpp=.o) $@ : ,g' > $@;
+-include $(OBJS:%.o=$(DEPDIR)/%.d)
+CLEAN_DIRS	+= $(DEPDIR)
 
 # Clean up
-ifndef LIBTRG
-CLEAN_DIRS	+= $(LIBDIRS:%=clean-%)
-endif
-.PHONY: $(CLEAN_DIRS)
-$(CLEAN_DIRS):
-	$(call verbose,"CLEAN	$(@:clean-%=%)",\
-	$(MAKE) -C $(@:clean-%=%) clean)
-
 .PHONY: clean
-clean: $(CLEAN_DIRS)
+clean:
 	$(call verbose,"CLEAN	$(CLEAN_FILES)",\
 	$(RM) $(CLEAN_FILES))
+	$(call verbose,"CLEAN	$(CLEAN_DIRS)",\
+	$(RM) -r $(CLEAN_DIRS))
+	@rmdir -p $(dir $(CLEAN_FILES)) 2> /dev/null || true
